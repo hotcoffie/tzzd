@@ -1,0 +1,29 @@
+version: '3'
+services:
+  tzzd-db:
+    image: 'mysql/mysql-server:5.7'
+    restart: always
+    container_name: tzzd-db
+    volumes:
+      - /home/xieyu/docker/mysql/data:/var/lib/mysql
+      - /home/xieyu/docker/mysql/conf:/etc/mysql/conf.d
+    ports:
+      - '3306:3306'
+    environment:
+      - "MYSQL_ROOT_PASSWORD=root123"
+      - "MYSQL_DATABASE=tzzd"
+      - "MYSQL_ROOT_HOST=%"
+    networks:
+      - net-tzzd-db
+  tzzd-redis:
+    image: 'redis:latest'
+    container_name: tzzd-redis
+    ports:
+      - '6379:6379'
+    networks:
+      - net-tzzd-redis
+networks:
+  net-tzzd-db:
+    driver: bridge
+  net-tzzd-redis:
+    driver: bridge
