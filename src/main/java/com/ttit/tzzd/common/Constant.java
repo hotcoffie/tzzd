@@ -9,4 +9,5 @@ package com.ttit.tzzd.common;
 public class Constant {
     public static final String SUCCESS = "success";
     public static final String ERROR = "errer";
+    public static final String TIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
 }

@@ -1,0 +1,33 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ttit.tzzd.dao.DeviceInfoDao">
+
+    <select id="searchPage" parameterType="String" resultType="com.ttit.tzzd.vo.DeviceInfoVo">
+        SELECT *
+        FROM device_info
+        <if test="keyword!=null and keyword!=''">
+            WHERE
+            is_del = '0'
+            <bind name="pattern" value="'%' + _parameter.keyword + '%'"/>
+            AND (serial_num LIKE #{pattern}
+            OR serial_code LIKE #{pattern}
+            OR owner_name LIKE #{pattern}
+            OR owner_phone LIKE #{pattern})
+        </if>
+    </select>
+
+
+    <select id="findById" parameterType="String" resultType="com.ttit.tzzd.entity.DeviceInfo">
+        SELECT *
+        FROM device_info
+        WHERE id = #{id}
+    </select>
+
+    <insert id="add" parameterType="com.ttit.tzzd.entity.DeviceInfo">
+        INSERT INTO device_info(
+            id
+        )
+        values (
+                   #{id}
+               )
+    </insert>
+</mapper>

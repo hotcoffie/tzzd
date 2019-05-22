@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2019/5/21 12:13:59                           */
+/* Created on:     2019/5/21 16:31:24                           */
 /*==============================================================*/
 
 
@@ -38,13 +38,14 @@ create table device_info
    serial_code          varchar(32) comment '串码',
    notice_time          timestamp comment '通告时间',
    dict_device_status   varchar(50) comment '(字典)设备状态',
-   groupCode            varchar(32) comment '分组编码',
+   group_code           varchar(32) comment '分组编码',
    owner_name           varchar(20) comment '业主姓名',
    owner_phone          varchar(20) comment '业主电话',
    remark               varchar(500) comment '地址/备注',
    create_time          timestamp default CURRENT_TIMESTAMP comment '创建时间',
    update_time          timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '更新时间',
-   is_del               char default '0' comment '删除标识:1删除0未删除'
+   is_del               char default '0' comment '删除标识:1删除0未删除',
+   primary key (id)
 );
 
 alter table device_info comment '设备信息';
@@ -105,7 +106,7 @@ create table dictionary
    order_num            int comment '排序，越大越前',
    creator              varchar(32) default '1' comment '创建人ID,暂时默认1',
    create_time          timestamp default CURRENT_TIMESTAMP comment '创建时间',
-   is_del               char comment '删除标识:1删除0未删除',
+   is_del               char default '0' comment '删除标识:1删除0未删除',
    primary key (id)
 );
 
@@ -132,7 +133,7 @@ create table soft_info
    creator              varchar(32) default '1' comment '创建人ID,暂时默认1',
    create_time          timestamp default CURRENT_TIMESTAMP comment '创建时间',
    update_time          timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '更新时间',
-   is_del               char comment '删除标识:1删除0未删除',
+   is_del               char default '0' comment '删除标识:1删除0未删除',
    primary key (id)
 );
 
@@ -157,7 +158,7 @@ create table soft_manager
    fk_soft_id           varchar(32) comment '软件ID',
    creator              varchar(32) default '1' comment '创建人ID,暂时默认1',
    create_time          timestamp default CURRENT_TIMESTAMP comment '创建时间',
-   is_del               char comment '删除标识:1删除0未删除',
+   is_del               char default '0' comment '删除标识:1删除0未删除',
    primary key (id)
 );
 

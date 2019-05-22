@@ -2,6 +2,8 @@ package com.ttit.tzzd.vo;
 
 import com.ttit.tzzd.common.BusinessException;
 import com.ttit.tzzd.common.Constant;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,10 +15,14 @@ import java.io.Serializable;
  * Date: 2019/5/2016:30
  */
 @Data
+@ApiModel(description = "通用返回对象")
 public class ResultVo implements Serializable {
+    @ApiModelProperty(value = "消息编码：success成功，errer失败")
     private String code;
-    private Object date;
+    @ApiModelProperty(value = "系统消息")
     private String message;
+    @ApiModelProperty(value = "具体返回信息")
+    private Object date;
 
     public static ResultVo success(Object date) {
         ResultVo vo = new ResultVo();

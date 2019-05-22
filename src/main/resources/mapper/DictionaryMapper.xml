@@ -1,0 +1,11 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ttit.tzzd.dao.DictionaryDao">
+
+    <select id="listForDict" resultType="com.ttit.tzzd.entity.Dictionary">
+        SELECT type, code, value
+        FROM dictionary
+        where is_del = '0'
+        ORDER BY order_num DESC
+    </select>
+
+</mapper>

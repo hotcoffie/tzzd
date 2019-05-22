@@ -5,7 +5,11 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
 mybatis:
-  typeAliasesPackage: com.ttit.tzzd.entity
-  mapperLocations: classpath:mapper/*.xml
+  type-aliases-package: com.ttit.tzzd.entity
+  mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
+
+business:
+  dict:
+    save-type: "app"

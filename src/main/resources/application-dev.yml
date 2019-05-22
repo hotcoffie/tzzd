@@ -21,3 +21,7 @@ spring:
         max-wait: -1ms
         #最小等待连接中的数量,设 0 为没有限制
         min-idle: 0
+
+logging:
+  level:
+    com.ttit.tzzd.dao: debug
