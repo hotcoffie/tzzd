@@ -1,7 +1,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ttit.tzzd.dao.DictionaryDao">
+<mapper namespace="com.ttit.tzzd.sys.dao.DictionaryDao">
 
-    <select id="listForDict" resultType="com.ttit.tzzd.entity.Dictionary">
+    <select id="listForDict" resultType="com.ttit.tzzd.sys.entity.Dictionary">
         SELECT type, code, value
         FROM dictionary
         where is_del = '0'

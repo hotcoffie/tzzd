@@ -1,0 +1,19 @@
+package com.ttit.tzzd.manager.vo;
+
+import com.ttit.tzzd.sys.entity.DeviceInfo;
+import lombok.*;
+
+/**
+ * Description:
+ *
+ * @author 小谢
+ * Date: 2019/5/228:32
+ */
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+public class DeviceInfoVo extends DeviceInfo {
+    private String deviceStatusName;
+    private String isDelName;
+}
