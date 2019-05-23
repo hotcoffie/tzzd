@@ -1,0 +1,61 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ttit.tzzd.manager.dao.SysLogDao">
+    <sql id="baseCols">
+        id,
+        dict_sys_log_type 'sysLogType',
+        content,
+        creator,
+        create_time,
+        is_del
+    </sql>
+    <select id="searchPage" parameterType="String" resultType="com.ttit.tzzd.manager.vo.SysLogVo">
+        SELECT
+        <include refid="baseCols"/>
+        FROM sys_log
+        <where>
+            is_del = '0'
+            <if test="devLogType!=null and devLogType!=''">
+                dict_sys_log_type=#{sysLogType}
+            </if>
+            <if test="keyword!=null and keyword!=''">
+                <bind name="pattern" value="'%' + _parameter.keyword + '%'"/>
+                AND (
+                content LIKE #{pattern}
+                )
+            </if>
+        </where>
+    </select>
+
+
+    <select id="findById" parameterType="String" resultType="com.ttit.tzzd.manager.vo.SysLogVo">
+        SELECT *
+        FROM sys_log
+        WHERE id = #{id}
+    </select>
+
+    <update id="del" parameterType="String">
+        update sys_log
+        set is_del=1
+        WHERE id = #{id}
+    </update>
+
+    <update id="update" parameterType="com.ttit.tzzd.manager.entity.SysLog">
+        update sys_log
+        set dict_sys_log_type = #{sysLogType},
+            content           = #{content}
+        WHERE id = #{id}
+    </update>
+
+    <insert id="add" parameterType="com.ttit.tzzd.manager.entity.SysLog">
+        INSERT INTO sys_log(id,
+                            dict_sys_log_type,
+                            content,
+                            creator,
+                            is_del)
+        values (#{id},
+                #{sysLogType},
+                #{content},
+                #{creator},
+                #{isDel})
+    </insert>
+</mapper>

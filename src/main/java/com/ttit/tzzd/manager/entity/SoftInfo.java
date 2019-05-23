@@ -1,5 +1,6 @@
-package com.ttit.tzzd.sys.entity;
+package com.ttit.tzzd.manager.entity;
 
+import com.ttit.tzzd.sys.common.Constant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -33,21 +34,17 @@ public class SoftInfo implements Serializable {
   	@ApiModelProperty(value = "下载路径" )
 	private String path;
 
-	/** 创建人ID,暂时默认1 */
-  	@ApiModelProperty(value = "创建人ID,暂时默认1" )
+	/** 创建人ID */
+  	@ApiModelProperty(value = "创建人ID" )
 	private String creator;
 
 	/** 创建时间 */
   	@ApiModelProperty(value = "创建时间" )
 	private Date createTime;
 
-	/** 更新时间 */
-  	@ApiModelProperty(value = "更新时间" )
-	private Date updateTime;
-
 	/** 删除标识:1删除0未删除 */
   	@ApiModelProperty(value = "删除标识:1删除0未删除" )
-	private String isDel;
+	private String isDel = Constant.IS_NOT_DEL;
 
 
 }

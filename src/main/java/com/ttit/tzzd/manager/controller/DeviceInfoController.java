@@ -1,27 +1,27 @@
 package com.ttit.tzzd.manager.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.ttit.tzzd.manager.entity.DeviceInfo;
 import com.ttit.tzzd.manager.service.DeviceInfoService;
+import com.ttit.tzzd.manager.vo.DeviceInfoVo;
+import com.ttit.tzzd.sys.common.Constant;
 import com.ttit.tzzd.sys.vo.ResultVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
 /**
- * Description:管理系统-设备信息
+ * Description:设备信息
  *
  * @author 小谢
  * Date: 2019/5/2113:50
  */
 @RestController
-@RequestMapping("/manager/device-info")
-@Api(tags = "管理系统-设备信息")
+@RequestMapping("/manager/device/info")
+@Api(tags = "设备信息")
 public class DeviceInfoController {
 
     @Resource
@@ -29,11 +29,42 @@ public class DeviceInfoController {
 
     @GetMapping("page")
     @ApiOperation(value = "分页查询设备信息列表", notes = "")
-    public ResultVo searchPage(@ApiParam(value = "搜索关键字") @RequestParam(required = false) String keyword,
+    public ResultVo searchPage(@ApiParam(value = "分组ID") @RequestParam(required = false) String groupId,
+                               @ApiParam(value = "搜索关键字") @RequestParam(required = false) String keyword,
                                @ApiParam(value = "当前页码，为空/小于0不分页", required = true, example = "1") @RequestParam Integer pageNum,
                                @ApiParam(value = "每页容量，为空/小于0不分页", required = true, example = "10") @RequestParam Integer pageSize,
                                @ApiParam(value = "排序方式，为空不排序") @RequestParam(required = false) String orderBy) {
-        PageInfo page = deviceInfoService.searchPage(keyword, pageNum, pageSize, orderBy);
+        PageInfo page = deviceInfoService.searchPage(groupId, keyword, pageNum, pageSize, orderBy);
         return ResultVo.success(page);
+    }
+
+    @PutMapping("regist")
+    @ApiOperation(value = "注册新的设备", notes = "")
+    public ResultVo regist(@RequestBody DeviceInfo deviceInfo) {
+        DeviceInfoVo info = deviceInfoService.regist(deviceInfo);
+        return ResultVo.success(info);
+    }
+
+    @DeleteMapping("del/{id}")
+    @ApiOperation(value = "从列表中逻辑删除指定设备", notes = "")
+    public ResultVo del(@ApiParam(value = "设备ID", required = true) @PathVariable String id) {
+        //用户体系暂未规划，这里默认用1
+        DeviceInfoVo deviceInfoVo = deviceInfoService.del(id, Constant.USER_ID_ADMIN);
+        return ResultVo.success(deviceInfoVo);
+    }
+
+    @PostMapping("modify")
+    @ApiOperation(value = "修改设备信息，只提供业主信息修改", notes = "")
+    public ResultVo modify(@ApiParam(value = "设备信息") @RequestBody DeviceInfo deviceInfo) {
+        DeviceInfoVo info = deviceInfoService.modify(deviceInfo, Constant.USER_ID_ADMIN);
+        return ResultVo.success(info);
+    }
+
+    @PostMapping("group/modify")
+    @ApiOperation(value = "修改设备信息，只提供业主信息修改", notes = "")
+    public ResultVo modifyGroup(@ApiParam(value = "设备ID", required = true) @RequestParam String id,
+                                @ApiParam(value = "设备分组ID", required = true) @RequestParam String groupId) {
+        DeviceInfoVo info = deviceInfoService.modifyGroup(id, groupId, Constant.USER_ID_ADMIN);
+        return ResultVo.success(info);
     }
 }

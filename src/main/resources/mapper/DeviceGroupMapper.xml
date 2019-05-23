@@ -1,0 +1,57 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ttit.tzzd.manager.dao.DeviceGroupDao">
+    <sql id="baseCols">
+        id,
+        `name`,
+        remark,
+        creator,
+        create_time,
+        update_time,
+        is_del
+    </sql>
+    <select id="searchPage" parameterType="String" resultType="com.ttit.tzzd.manager.entity.DeviceGroup">
+        SELECT
+        <include refid="baseCols"/>
+        FROM device_group
+        <where>
+            is_del = '0'
+            <if test="keyword!=null and keyword!=''">
+                <bind name="pattern" value="'%' + _parameter.keyword + '%'"/>
+                AND (
+                name LIKE #{pattern}
+                )
+            </if>
+        </where>
+    </select>
+
+
+    <select id="findById" parameterType="String" resultType="com.ttit.tzzd.manager.entity.DeviceGroup">
+        SELECT *
+        FROM device_group
+        WHERE id = #{id}
+    </select>
+
+    <update id="del" parameterType="String">
+        update device_group
+        set is_del=1
+        WHERE id = #{id}
+    </update>
+
+    <update id="modify" parameterType="com.ttit.tzzd.manager.entity.DeviceGroup">
+        update device_group
+        set `name`= #{name},
+            remark = #{remark}
+        WHERE id = #{id}
+    </update>
+
+    <insert id="add" parameterType="com.ttit.tzzd.manager.entity.DeviceGroup">
+        INSERT INTO device_group(id,
+                                 `name`,
+                                 remark,
+                                 is_del)
+        values (#{id},
+                #{name},
+                #{remark},
+                #{isDel})
+    </insert>
+</mapper>

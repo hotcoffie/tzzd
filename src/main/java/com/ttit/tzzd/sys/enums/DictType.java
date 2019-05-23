@@ -10,7 +10,9 @@ public enum DictType {
     /**
      * 设备状态
      */
-    deviceStatus("deviceStatus");
+    deviceStatus("deviceStatus"),
+    devLogType("devLogType"),
+    sysLogType("sysLogType");
 
     private String code;
 

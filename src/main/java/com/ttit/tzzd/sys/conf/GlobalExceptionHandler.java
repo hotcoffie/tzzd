@@ -1,9 +1,11 @@
 package com.ttit.tzzd.sys.conf;
 
-import com.ttit.tzzd.sys.common.BusinessException;
+import com.ttit.tzzd.sys.exceptions.BusinessException;
 import com.ttit.tzzd.sys.vo.ResultVo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
@@ -23,6 +25,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Description:全局的异常处理
@@ -33,6 +37,8 @@ import java.util.Set;
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
+
     /**
      * 系统测试状态标识
      */
@@ -50,10 +56,10 @@ public class GlobalExceptionHandler {
     /**
      * 通用的记录日志，返回指定错误信息方法
      */
-    private ResultVo error(String msg, Exception e) {
+    protected ResultVo error(String msg, Exception e) {
         log.error(msg, e);
-        //开发和测试状态，返回完整的错误栈到前台
-        if (ACTIVE_TEST.equals(active) || ACTIVE_DEV.equals(active)) {
+        //测试状态，返回完整的错误栈到前台
+        if (ACTIVE_TEST.equals(active)) {
             return ResultVo.error(msg, e);
         }
         return ResultVo.error(msg);
@@ -161,6 +167,28 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResultVo handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e) {
         return error("不支持当前媒体类型！", e);
+    }
+
+    private Pattern duplicateKeyExceptionPattern = Pattern.compile("Duplicate entry '(\\w+)' for key");
+
+    /**
+     * 自定义数据库唯一性异常
+     */
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(DuplicateKeyException.class)
+    @ResponseBody
+    public ResultVo handleDuplicateKeyException(DuplicateKeyException e) {
+        String msg = e.getMessage();
+        String newMsg = "数据库操作失败！";
+        if (StringUtils.isNotBlank(msg)) {
+            System.out.println(msg);
+            Matcher matcher = duplicateKeyExceptionPattern.matcher(msg);
+            if (matcher.find()) {
+                String code = matcher.group(1);
+                newMsg = "设备信息[" + code + "]已存在，请勿重复注册！";
+            }
+        }
+        return error(newMsg, e);
     }
 
     /**

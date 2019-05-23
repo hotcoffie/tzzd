@@ -1,7 +1,11 @@
 package com.ttit.tzzd.manager.vo;
 
-import com.ttit.tzzd.sys.entity.DeviceInfo;
-import lombok.*;
+import com.ttit.tzzd.manager.entity.DeviceInfo;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Description:
@@ -11,9 +15,11 @@ import lombok.*;
  */
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
+@ApiModel(description = "设备信息")
 public class DeviceInfoVo extends DeviceInfo {
+    @ApiModelProperty(value = "设备状态名" )
     private String deviceStatusName;
-    private String isDelName;
+    @ApiModelProperty(value = "设备分组名" )
+    private String groupName;
 }

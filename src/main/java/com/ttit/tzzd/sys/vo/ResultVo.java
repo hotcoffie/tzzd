@@ -1,6 +1,6 @@
 package com.ttit.tzzd.sys.vo;
 
-import com.ttit.tzzd.sys.common.BusinessException;
+import com.ttit.tzzd.sys.exceptions.BusinessException;
 import com.ttit.tzzd.sys.common.Constant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

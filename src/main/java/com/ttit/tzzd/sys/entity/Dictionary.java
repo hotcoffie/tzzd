@@ -1,5 +1,6 @@
 package com.ttit.tzzd.sys.entity;
 
+import com.ttit.tzzd.sys.common.Constant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -53,8 +54,8 @@ public class Dictionary implements Serializable {
   	@ApiModelProperty(value = "排序，越大越前" )
 	private long orderNum;
 
-	/** 创建人ID,暂时默认1 */
-  	@ApiModelProperty(value = "创建人ID,暂时默认1" )
+	/** 创建人ID*/
+  	@ApiModelProperty(value = "创建人ID" )
 	private String creator;
 
 	/** 创建时间 */
@@ -63,7 +64,7 @@ public class Dictionary implements Serializable {
 
 	/** 删除标识:1删除0未删除 */
   	@ApiModelProperty(value = "删除标识:1删除0未删除" )
-	private String isDel;
+	private String isDel = Constant.IS_NOT_DEL;
 
 
 }

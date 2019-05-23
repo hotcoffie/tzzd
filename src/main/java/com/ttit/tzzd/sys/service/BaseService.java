@@ -1,10 +1,9 @@
 package com.ttit.tzzd.sys.service;
 
 import com.github.pagehelper.PageHelper;
-import com.ttit.tzzd.sys.common.BusinessException;
 import com.ttit.tzzd.sys.common.DictHadler;
+import com.ttit.tzzd.sys.exceptions.BusinessException;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.annotation.Resource;
 
@@ -17,7 +16,7 @@ import javax.annotation.Resource;
 public class BaseService {
 
     @Resource
-    private StringRedisTemplate stringRedisTemplate;
+    private DictHadler dictHadler;
 
     /**
      * 配置分页查询
@@ -39,29 +38,4 @@ public class BaseService {
         }
     }
 
-    /**
-     * 从Redis中查值
-     *
-     * @param redisKey      redis中的key
-     * @param redisFallback redis查不到时的默认值
-     */
-    protected String queryCache(String redisKey, String redisFallback) {
-        String redisValue = stringRedisTemplate.opsForValue().get(redisKey);
-        if (StringUtils.isBlank(redisValue)) {
-            redisValue = redisFallback;
-        }
-        return redisValue;
-    }
-
-    /**
-     * 从Radis中查值，返回字典转码后的结果
-     *
-     * @param redisKey      redis中的key
-     * @param redisFallback redis查不到时的默认值
-     * @param dictType      码表所述类别编码
-     */
-    protected String queryCache(String redisKey, String redisFallback, String dictType) {
-        String redisValue = queryCache(redisKey, redisFallback);
-        return DictHadler.get(dictType, redisValue);
-    }
 }

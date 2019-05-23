@@ -1,0 +1,66 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ttit.tzzd.manager.dao.DeviceLogDao">
+    <sql id="baseCols">
+        id,
+        fk_dev_serial_num 'devSerialNum',
+        dict_dev_log_type 'devLogType',
+        content,
+        creator,
+        create_time,
+        is_del
+    </sql>
+    <select id="searchPage" parameterType="String" resultType="com.ttit.tzzd.manager.vo.DeviceLogVo">
+        SELECT
+        <include refid="baseCols"/>
+        FROM device_log
+        <where>
+            is_del = '0'
+            <if test="devLogType!=null and devLogType!=''">
+                dict_dev_log_type=#{devLogType}
+            </if>
+            <if test="keyword!=null and keyword!=''">
+                <bind name="pattern" value="'%' + _parameter.keyword + '%'"/>
+                AND (
+                fk_dev_serial_num LIKE #{pattern}
+                OR content LIKE #{pattern}
+                )
+            </if>
+        </where>
+    </select>
+
+
+    <select id="findById" parameterType="String" resultType="com.ttit.tzzd.manager.vo.DeviceLogVo">
+        SELECT *
+        FROM device_log
+        WHERE id = #{id}
+    </select>
+
+    <update id="del" parameterType="String">
+        update device_log
+        set is_del=1
+        WHERE id = #{id}
+    </update>
+
+    <update id="update" parameterType="com.ttit.tzzd.manager.entity.DeviceLog">
+        update device_log
+        set fk_dev_serial_num = #{devSerialNum},
+            dict_dev_log_type = #{devLogType},
+            content           = #{content}
+        WHERE id = #{id}
+    </update>
+
+    <insert id="add" parameterType="com.ttit.tzzd.manager.entity.DeviceLog">
+        INSERT INTO device_log(id,
+                               fk_dev_serial_num,
+                               dict_dev_log_type,
+                               content,
+                               creator,
+                               is_del)
+        values (#{id},
+                #{devSerialNum},
+                #{devLogType},
+                #{content},
+                #{creator},
+                #{isDel})
+    </insert>
+</mapper>

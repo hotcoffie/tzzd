@@ -6,21 +6,22 @@ import com.ttit.tzzd.sys.service.DictionaryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Description:全局的码表工具，支持程序内建码表和基于Redis的码表
- * 但是由于时间有限，加上Redis版很容易实现，这里先实现内建码表
+ * 但是由于时间有限，加上Redis版得注册成bean还得调试，先使用内建版
  *
  * @author 小谢
  * Date: 2019/5/2115:02
  */
 @Component
+@Scope("singleton")
 @Slf4j
 public class DictHadler implements ApplicationListener<ContextRefreshedEvent> {
     /**
@@ -32,13 +33,11 @@ public class DictHadler implements ApplicationListener<ContextRefreshedEvent> {
     /**
      * 码表
      */
-    private static Map<String, HashMap<String, String>> dict;
+    private static Dict dict;
 
-    private final DictionaryService dictionaryService;
+    @Resource
+    private DictionaryService dictionaryService;
 
-    public DictHadler(DictionaryService dictionaryService) {
-        this.dictionaryService = dictionaryService;
-    }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -58,37 +57,26 @@ public class DictHadler implements ApplicationListener<ContextRefreshedEvent> {
 
         int len = list.size();
         log.info("共查询到{}字典信息", len);
-        if (dict == null) {
-            dict = new HashMap<>();
+        if (Constant.DICT_SAVE_TYPE_REDIS.equals(saveType)) {
+            dict = new DictInRedis();
+        } else {
+            dict = new DictInApplication();
         }
-        list.forEach(dictionary -> {
-            String type = dictionary.getType();
-            HashMap<String, String> map;
-            if (dict.containsKey(type)) {
-                map = dict.get(type);
-            } else {
-                map = new HashMap<>();
-                dict.put(type, map);
-            }
-            map.put(dictionary.getCode(), dictionary.getValue());
-        });
+        dict.init(list);
         log.info("数据字典初始化完毕");
     }
 
-    public static String get(String type, String key) {
+    public String get(String type, String key) {
+        if (dict == null) {
+            initDict();
+        }
         if (dict == null) {
             return "";
         }
-
-        Map<String, String> group = dict.get(type);
-        if (group == null || group.isEmpty()) {
-            return "";
-        }
-        String value = group.get(key);
-        return value == null ? "" : value;
+        return dict.get(type, key);
     }
 
-    public static String get(DictType type, String key) {
+    public String get(DictType type, String key) {
         return get(type.getCode(), key);
     }
 }

@@ -1,4 +1,4 @@
-package com.ttit.tzzd.sys.enums;
+package com.ttit.tzzd.manager.enums;
 
 /**
  * Description: 设备状态
@@ -16,16 +16,16 @@ public enum DeviceStatus {
      */
     breaked("2"),
     /**
-     * 下线
+     * 离线
      */
     offline("3");
-    private String value;
+    private String code;
 
-    DeviceStatus(String value) {
-        this.value = value;
+    DeviceStatus(String code) {
+        this.code = code;
     }
 
-    public String getValue() {
-        return value;
+    public String getCode() {
+        return code;
     }
 }
