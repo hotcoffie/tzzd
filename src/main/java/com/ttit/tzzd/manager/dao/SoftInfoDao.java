@@ -1,6 +1,7 @@
 package com.ttit.tzzd.manager.dao;
 
 import com.ttit.tzzd.manager.entity.SoftInfo;
+import com.ttit.tzzd.manager.vo.SoftInfoVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -13,13 +14,11 @@ import java.util.List;
  */
 public interface SoftInfoDao {
 
-    List<SoftInfo> searchPage(@Param("keyword") String keyword);
+    List<com.ttit.tzzd.manager.vo.SoftInfoVo> searchPage(@Param("softType") String softType, @Param("keyword") String keyword);
 
-    SoftInfo findById(@Param("id") String id);
+    SoftInfoVo findById(@Param("id") String id);
 
     Integer add(SoftInfo softInfo);
 
     Integer del(@Param("id") String id);
-
-    Integer modify(SoftInfo softInfo);
 }

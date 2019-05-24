@@ -1,6 +1,6 @@
-package com.ttit.tzzd.manager.service;
+package com.ttit.tzzd.sys.service;
 
-import com.ttit.tzzd.manager.entity.SysLog;
+import com.ttit.tzzd.sys.entity.SysLog;
 
 import java.util.Date;
 

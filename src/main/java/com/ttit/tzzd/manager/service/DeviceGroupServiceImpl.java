@@ -3,12 +3,12 @@ package com.ttit.tzzd.manager.service;
 import com.github.pagehelper.PageInfo;
 import com.ttit.tzzd.manager.dao.DeviceGroupDao;
 import com.ttit.tzzd.manager.entity.DeviceGroup;
-import com.ttit.tzzd.manager.enums.SysLogTypeEnum;
+import com.ttit.tzzd.sys.enums.SysLogTypeEnum;
 import com.ttit.tzzd.sys.common.Constant;
-import com.ttit.tzzd.sys.exceptions.BusinessException;
 import com.ttit.tzzd.sys.exceptions.NotExistException;
 import com.ttit.tzzd.sys.exceptions.NotNullException;
 import com.ttit.tzzd.sys.service.BaseService;
+import com.ttit.tzzd.sys.service.SysLogService;
 import com.ttit.tzzd.sys.utils.UuidUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -70,7 +70,7 @@ public class DeviceGroupServiceImpl extends BaseService implements DeviceGroupSe
         }
         DeviceGroup deviceGroup = deviceGroupDao.findById(id);
         if (deviceGroup == null || Constant.IS_DEL.equals(deviceGroup.getIsDel())) {
-            throw new BusinessException("设备分组ID:" + id);
+            throw new NotExistException("设备分组ID:" + id);
         }
 
         deviceGroupDao.del(id);

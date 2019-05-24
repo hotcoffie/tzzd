@@ -12,6 +12,6 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
 mybatis:
   type-aliases-package: com.ttit.tzzd.entity
-  mapper-locations: classpath:mapper/*.xml
+  mapper-locations: classpath:mapper/*/*.xml
   configuration:
     map-underscore-to-camel-case: true

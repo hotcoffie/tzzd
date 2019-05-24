@@ -1,6 +1,6 @@
-package com.ttit.tzzd.manager.vo;
+package com.ttit.tzzd.sys.vo;
 
-import com.ttit.tzzd.manager.entity.SysLog;
+import com.ttit.tzzd.sys.entity.SysLog;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

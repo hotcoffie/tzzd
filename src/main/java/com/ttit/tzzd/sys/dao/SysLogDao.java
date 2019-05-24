@@ -1,7 +1,7 @@
-package com.ttit.tzzd.manager.dao;
+package com.ttit.tzzd.sys.dao;
 
-import com.ttit.tzzd.manager.entity.SysLog;
-import com.ttit.tzzd.manager.vo.SysLogVo;
+import com.ttit.tzzd.sys.entity.SysLog;
+import com.ttit.tzzd.sys.vo.SysLogVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

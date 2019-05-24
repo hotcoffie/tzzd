@@ -10,10 +10,6 @@ public class Constant {
     public static final String SUCCESS = "success";
     public static final String ERROR = "errer";
     public static final String TIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
-    /**
-     * 数据分隔符
-     */
-    public static final String SEPARATOR_DATA = "|";
 
     public static final String DICT_SAVE_TYPE_APP = "app";
     public static final String DICT_SAVE_TYPE_REDIS = "redis";
@@ -27,6 +23,8 @@ public class Constant {
      * 默认的管理员ID
      */
     public static final String USER_ID_ADMIN = "1";
+
+    public static final String DOWNLOAD_PATH = "/sys/atta/download/";
 
     /**
      * 业务异常提示语，必填项校验提示

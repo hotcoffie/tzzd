@@ -1,0 +1,53 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ttit.tzzd.sys.dao.AttachmentDao">
+    <sql id="baseCols">
+        id,
+        `name`,
+        `size`,
+        `path`,
+        creator,
+        create_time,
+        is_del
+    </sql>
+    <select id="searchPage" parameterType="String" resultType="com.ttit.tzzd.sys.entity.Attachment">
+        SELECT
+        <include refid="baseCols"/>
+        FROM sys_attachment
+        <where>
+            is_del = '0'
+            <if test="keyword!=null and keyword!=''">
+                <bind name="pattern" value="'%' + _parameter.keyword + '%'"/>
+                AND (
+                `name` LIKE #{pattern}
+                )
+            </if>
+        </where>
+    </select>
+
+
+    <select id="findById" parameterType="String" resultType="com.ttit.tzzd.sys.entity.Attachment">
+        SELECT
+        <include refid="baseCols"/>
+        FROM sys_attachment
+        WHERE id = #{id}
+    </select>
+
+<!--    <update id="del" parameterType="String">-->
+<!--        UPDATE sys_attachment-->
+<!--        SET is_del = 1-->
+<!--        WHERE id = #{id}-->
+<!--    </update>-->
+
+    <insert id="add" parameterType="com.ttit.tzzd.sys.entity.Attachment">
+        INSERT INTO sys_attachment(id,
+                                   `name`,
+                                   `size`,
+                                   `path`,
+                                   is_del)
+        VALUES (#{id},
+                #{name},
+                #{size},
+                #{path},
+                #{isDel})
+    </insert>
+</mapper>

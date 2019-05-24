@@ -1,6 +1,6 @@
-package com.ttit.tzzd.manager.entity;
+package com.ttit.tzzd.sys.entity;
 
-import com.ttit.tzzd.manager.enums.SysLogTypeEnum;
+import com.ttit.tzzd.sys.enums.SysLogTypeEnum;
 import com.ttit.tzzd.sys.common.Constant;
 import com.ttit.tzzd.sys.exceptions.BusinessException;
 import com.ttit.tzzd.sys.utils.UuidUtils;

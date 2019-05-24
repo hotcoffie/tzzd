@@ -1,4 +1,4 @@
-package com.ttit.tzzd.manager.entity;
+package com.ttit.tzzd.sys.entity;
 
 import com.ttit.tzzd.sys.common.Constant;
 import io.swagger.annotations.ApiModel;
@@ -10,15 +10,15 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Description: 软件信息
+ * Description: 附件
  *
  * @author xiaoxie
  * Date: 2019/5/2110:22
  */
 @Data
 @NoArgsConstructor
-@ApiModel(description = "软件信息")
-public class SoftInfo implements Serializable {
+@ApiModel(description = "附件")
+public class Attachment implements Serializable {
 
     /**
      * id
@@ -27,16 +27,22 @@ public class SoftInfo implements Serializable {
     private String id;
 
     /**
-     * (字典)软件所属类型编码
+     * 附件名称
      */
-    @ApiModelProperty(value = "(字典)软件所属类型编码")
-    private String softType;
+    @ApiModelProperty(value = "附件名称")
+    private String name;
 
     /**
-     * 附件ID
+     * 附件大小
      */
-    @ApiModelProperty(value = "附件ID")
-    private String attaId;
+    @ApiModelProperty(value = "附件大小")
+    private Long size;
+
+    /**
+     * 下载路径
+     */
+    @ApiModelProperty(value = "下载路径")
+    private String path;
 
     /**
      * 创建人ID
@@ -57,10 +63,11 @@ public class SoftInfo implements Serializable {
     private String isDel = Constant.IS_NOT_DEL;
 
 
-    public SoftInfo(String id, String softType, String attaId, String creator) {
+    public Attachment(String id, String name, Long size, String path, String creator) {
         this.id = id;
-        this.softType = softType;
-        this.attaId = attaId;
+        this.name = name;
+        this.size = size;
+        this.path = path;
         this.creator = creator;
     }
 

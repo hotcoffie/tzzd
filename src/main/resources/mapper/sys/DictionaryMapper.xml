@@ -3,7 +3,7 @@
 
     <select id="listForDict" resultType="com.ttit.tzzd.sys.entity.Dictionary">
         SELECT type, code, value
-        FROM dictionary
+        FROM sys_dictionary
         where is_del = '0'
         ORDER BY order_num DESC
     </select>

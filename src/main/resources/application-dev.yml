@@ -33,6 +33,7 @@ logging:
     com.ttit.tzzd.dao: debug
 
 business:
+  url: localhost
   dict:
     #使用内建版数据字典
     save-type: "app"

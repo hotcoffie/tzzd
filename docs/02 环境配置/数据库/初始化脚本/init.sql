@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2019/5/23 14:37:16                           */
+/* Created on:     2019/5/24 14:01:19                           */
 /*==============================================================*/
 
 
@@ -14,15 +14,17 @@ drop index Index_1 on device_log;
 
 drop table if exists device_log;
 
-drop index Index_1 on dictionary;
-
-drop table if exists dictionary;
-
 drop index Index_1 on soft_info;
 
 drop table if exists soft_info;
 
 drop table if exists soft_manager;
+
+drop table if exists sys_attachment;
+
+drop index Index_1 on sys_dictionary;
+
+drop table if exists sys_dictionary;
 
 drop index Index_1 on sys_log;
 
@@ -105,46 +107,13 @@ create index Index_1 on device_log
 );
 
 /*==============================================================*/
-/* Table: dictionary                                            */
-/*==============================================================*/
-create table dictionary
-(
-   id                   varchar(32) not null comment 'id',
-   type                 varchar(50) comment '编码类型',
-   type_name            varchar(50) comment '编码类型名称',
-   code                 varchar(50) not null comment '编码',
-   value                varchar(50) not null comment '值',
-   value4               varchar(500) comment '值4',
-   value3               varchar(100) comment '值3',
-   value2               varchar(50) comment '值2',
-   order_num            int comment '排序，越大越前',
-   creator              varchar(32) default '1' comment '创建人ID',
-   create_time          timestamp default CURRENT_TIMESTAMP comment '创建时间',
-   update_time          timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '更新时间',
-   is_del               char default '0' comment '删除标识:1删除0未删除',
-   primary key (id)
-);
-
-alter table dictionary comment '数据字典';
-
-/*==============================================================*/
-/* Index: Index_1                                               */
-/*==============================================================*/
-create index Index_1 on dictionary
-(
-   type,
-   code
-);
-
-/*==============================================================*/
 /* Table: soft_info                                             */
 /*==============================================================*/
 create table soft_info
 (
    id                   varchar(32) not null comment 'id',
    dict_soft_type       varchar(50) comment '(字典)软件所属类型编码',
-   name                 varchar(100) comment '软件名称',
-   path                 varchar(200) comment '下载路径',
+   fk_atta_id           varchar(32) comment '附件ID',
    creator              varchar(32) default '1' comment '创建人ID',
    create_time          timestamp default CURRENT_TIMESTAMP comment '创建时间',
    is_del               char default '0' comment '删除标识:1删除0未删除',
@@ -178,6 +147,55 @@ create table soft_manager
 );
 
 alter table soft_manager comment '软件管理';
+
+/*==============================================================*/
+/* Table: sys_attachment                                        */
+/*==============================================================*/
+create table sys_attachment
+(
+   id                   varchar(32) not null comment 'id',
+   name                 varchar(100) comment '附件名称',
+   size                 int comment '附件大小',
+   path                 varchar(200) comment '下载路径',
+   creator              varchar(32) default '1' comment '创建人ID',
+   create_time          timestamp default CURRENT_TIMESTAMP comment '创建时间',
+   is_del               char default '0' comment '删除标识:1删除0未删除',
+   primary key (id)
+);
+
+alter table sys_attachment comment '附件';
+
+/*==============================================================*/
+/* Table: sys_dictionary                                        */
+/*==============================================================*/
+create table sys_dictionary
+(
+   id                   varchar(32) not null comment 'id',
+   type                 varchar(50) comment '编码类型',
+   type_name            varchar(50) comment '编码类型名称',
+   code                 varchar(50) not null comment '编码',
+   value                varchar(50) not null comment '值',
+   value4               varchar(500) comment '值4',
+   value3               varchar(100) comment '值3',
+   value2               varchar(50) comment '值2',
+   order_num            int comment '排序，越大越前',
+   creator              varchar(32) default '1' comment '创建人ID',
+   create_time          timestamp default CURRENT_TIMESTAMP comment '创建时间',
+   update_time          timestamp default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '更新时间',
+   is_del               char default '0' comment '删除标识:1删除0未删除',
+   primary key (id)
+);
+
+alter table sys_dictionary comment '数据字典';
+
+/*==============================================================*/
+/* Index: Index_1                                               */
+/*==============================================================*/
+create index Index_1 on sys_dictionary
+(
+   type,
+   code
+);
 
 /*==============================================================*/
 /* Table: sys_log                                               */

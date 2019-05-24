@@ -1,4 +1,4 @@
-package com.ttit.tzzd.manager.enums;
+package com.ttit.tzzd.sys.enums;
 
 /**
  * Description: 设备日志类型
