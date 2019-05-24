@@ -6,7 +6,7 @@ package com.ttit.tzzd.manager.enums;
  * @author 小谢
  * Date: 2019/5/2116:22
  */
-public enum DeviceStatus {
+public enum DeviceStatusEnum {
     /**
      * 在线
      */
@@ -21,7 +21,7 @@ public enum DeviceStatus {
     offline("3");
     private String code;
 
-    DeviceStatus(String code) {
+    DeviceStatusEnum(String code) {
         this.code = code;
     }
 

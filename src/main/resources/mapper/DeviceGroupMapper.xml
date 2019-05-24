@@ -18,7 +18,7 @@
             <if test="keyword!=null and keyword!=''">
                 <bind name="pattern" value="'%' + _parameter.keyword + '%'"/>
                 AND (
-                name LIKE #{pattern}
+                `name` LIKE #{pattern}
                 )
             </if>
         </where>

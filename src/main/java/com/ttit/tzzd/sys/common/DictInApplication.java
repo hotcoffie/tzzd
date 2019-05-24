@@ -1,7 +1,7 @@
 package com.ttit.tzzd.sys.common;
 
 import com.ttit.tzzd.sys.entity.Dictionary;
-import com.ttit.tzzd.sys.enums.DictType;
+import com.ttit.tzzd.sys.enums.DictTypeEnum;
 
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +49,7 @@ public class DictInApplication implements Dict {
     }
 
     @Override
-    public String get(DictType type, String key) {
+    public String get(DictTypeEnum type, String key) {
         return get(type.getCode(), key);
     }
 }

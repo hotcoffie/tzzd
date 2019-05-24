@@ -6,7 +6,7 @@ package com.ttit.tzzd.manager.enums;
  * @author 小谢
  * Date: 2019/5/239:53
  */
-public enum DevLogType {
+public enum DevLogTypeEnum {
     /**
      * 注册、删除、修改、登入、登出、报错
      */
@@ -19,12 +19,12 @@ public enum DevLogType {
 
     private String code;
 
-    DevLogType(String code) {
+    DevLogTypeEnum(String code) {
         this.code = code;
     }
 
-    public static DevLogType get(String devLogType) {
-        for (DevLogType type : DevLogType.values()) {
+    public static DevLogTypeEnum get(String devLogType) {
+        for (DevLogTypeEnum type : DevLogTypeEnum.values()) {
             if (type.code.equals(devLogType)) {
                 return type;
             }

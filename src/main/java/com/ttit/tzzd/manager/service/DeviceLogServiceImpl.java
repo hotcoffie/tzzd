@@ -8,6 +8,7 @@ import com.ttit.tzzd.manager.exceptions.DeviceException;
 import com.ttit.tzzd.sys.exceptions.BusinessException;
 import com.ttit.tzzd.sys.exceptions.NotNullException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -26,6 +27,7 @@ public class DeviceLogServiceImpl implements DeviceLogService {
     private DeviceInfoDao deviceInfoDao;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public DeviceLog addLog(DeviceLog log) {
         if (log == null) {
             throw new NotNullException();
@@ -40,6 +42,7 @@ public class DeviceLogServiceImpl implements DeviceLogService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public DeviceLog addLog(String devSerialNum, String devLogType, String content, Date createTime) {
         DeviceLog log = new DeviceLog(devSerialNum, devLogType, content, createTime);
         return addLog(log);

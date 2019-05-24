@@ -6,17 +6,31 @@ package com.ttit.tzzd.sys.enums;
  * @author 小谢
  * Date: 2019/5/2116:57
  */
-public enum DictType {
+public enum DictTypeEnum {
+    /**
+     * 删除状态
+     */
+    isDel("isDel"),
     /**
      * 设备状态
      */
     deviceStatus("deviceStatus"),
+    /**
+     * 设备日志
+     */
     devLogType("devLogType"),
-    sysLogType("sysLogType");
+    /**
+     * 系统日志
+     */
+    sysLogType("sysLogType"),
+    /**
+     * 软件类型
+     */
+    softType("softType");
 
     private String code;
 
-    DictType(String code) {
+    DictTypeEnum(String code) {
         this.code = code;
     }
 

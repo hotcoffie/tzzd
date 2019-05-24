@@ -3,7 +3,7 @@ package com.ttit.tzzd.manager.service;
 import com.github.pagehelper.PageInfo;
 import com.ttit.tzzd.manager.dao.DeviceGroupDao;
 import com.ttit.tzzd.manager.entity.DeviceGroup;
-import com.ttit.tzzd.manager.enums.SysLogType;
+import com.ttit.tzzd.manager.enums.SysLogTypeEnum;
 import com.ttit.tzzd.sys.common.Constant;
 import com.ttit.tzzd.sys.exceptions.BusinessException;
 import com.ttit.tzzd.sys.exceptions.NotExistException;
@@ -39,7 +39,7 @@ public class DeviceGroupServiceImpl extends BaseService implements DeviceGroupSe
     }
 
     @Override
-    @Transactional(rollbackFor = RuntimeException.class)
+    @Transactional(rollbackFor = Exception.class)
     public DeviceGroup add(DeviceGroup deviceGroup, String userId) {
         //1.数据校验
         if (deviceGroup == null) {
@@ -56,13 +56,13 @@ public class DeviceGroupServiceImpl extends BaseService implements DeviceGroupSe
         //4.记录设备日志
         String content = "新增设备分组：" + deviceGroup.toString();
         Date now = new Date();
-        sysLogService.addLog(SysLogType.del.getCode(), content, userId, now);
+        sysLogService.addLog(SysLogTypeEnum.del.getCode(), content, userId, now);
 
         return deviceGroupDao.findById(id);
     }
 
     @Override
-    @Transactional(rollbackFor = RuntimeException.class)
+    @Transactional(rollbackFor = Exception.class)
     public DeviceGroup del(String id, String userId) {
         //1.数据校验
         if (StringUtils.isBlank(id)) {
@@ -77,13 +77,13 @@ public class DeviceGroupServiceImpl extends BaseService implements DeviceGroupSe
         String content = "删除设备分组：" + deviceGroup.toString();
         Date now = new Date();
         //记录系统日志
-        sysLogService.addLog(SysLogType.del.getCode(), content, userId, now);
+        sysLogService.addLog(SysLogTypeEnum.del.getCode(), content, userId, now);
 
         return deviceGroup;
     }
 
     @Override
-    @Transactional(rollbackFor = RuntimeException.class)
+    @Transactional(rollbackFor = Exception.class)
     public DeviceGroup modify(DeviceGroup deviceGroup, String userId) {
         //1.数据校验
         if (deviceGroup == null) {
@@ -104,7 +104,7 @@ public class DeviceGroupServiceImpl extends BaseService implements DeviceGroupSe
         //3.记日志，因为只是修改了业主信息，不计入设备日志
         String content = "修改设备分组信息，原数据：" + deviceGroupTest.toString() + "；新数据：" + deviceGroup.toString();
         Date now = new Date();
-        sysLogService.addLog(SysLogType.modify.getCode(), content, userId, now);
+        sysLogService.addLog(SysLogTypeEnum.modify.getCode(), content, userId, now);
 
         return deviceGroupDao.findById(id);
     }

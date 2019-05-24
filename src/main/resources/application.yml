@@ -1,25 +1,17 @@
 #公共配置与profiles选择无关
 spring:
+  application:
+    name: mainServer
   profiles:
     active: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jackson:
+    default-property-inclusion: ALWAYS
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
 mybatis:
   type-aliases-package: com.ttit.tzzd.entity
   mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
-
-business:
-  dict:
-    #使用内建版数据字典
-    save-type: "app"
-  log:
-    #日志级别all，代表用户任何操作都会被记录到系统日志（数据库）中
-    level: "all"
-  time-limit:
-    #设备连接时限，单位秒
-    #上次收到信号，在online时间内，视为在线
-    online: 10
-    #上次收到信号，超过online时间，小于breaked时间，视为中断；大于breaked时间，视为离线
-    breaked: 40

@@ -1,7 +1,7 @@
 package com.ttit.tzzd.manager.entity;
 
 import com.ttit.tzzd.sys.common.Constant;
-import com.ttit.tzzd.manager.enums.DevLogType;
+import com.ttit.tzzd.manager.enums.DevLogTypeEnum;
 import com.ttit.tzzd.sys.exceptions.BusinessException;
 import com.ttit.tzzd.manager.exceptions.DeviceException;
 import com.ttit.tzzd.sys.utils.UuidUtils;
@@ -69,7 +69,7 @@ public class DeviceLog implements Serializable {
     public DeviceLog(DeviceException e) {
         this.id = UuidUtils.generate();
         this.devSerialNum = e.getSerialNum();
-        this.devLogType = DevLogType.error.getCode();
+        this.devLogType = DevLogTypeEnum.error.getCode();
         this.content = e.getMessage();
         this.createTime = e.getTime();
     }
@@ -84,7 +84,7 @@ public class DeviceLog implements Serializable {
     }
 
     public void setDevLogType(String devLogType) {
-        DevLogType type = DevLogType.get(devLogType);
+        DevLogTypeEnum type = DevLogTypeEnum.get(devLogType);
         if (type == null) {
             throw new BusinessException("不存在编码[" + devLogType + "]的设备日志类型！");
         }

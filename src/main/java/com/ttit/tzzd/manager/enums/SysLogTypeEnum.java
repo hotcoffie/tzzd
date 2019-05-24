@@ -6,7 +6,7 @@ package com.ttit.tzzd.manager.enums;
  * @author 小谢
  * Date: 2019/5/239:53
  */
-public enum SysLogType {
+public enum SysLogTypeEnum {
     /**
      * 注册、删除、修改、登入、登出、报错
      */
@@ -19,12 +19,12 @@ public enum SysLogType {
 
     private String code;
 
-    SysLogType(String code) {
+    SysLogTypeEnum(String code) {
         this.code = code;
     }
 
-    public static SysLogType get(String sysLogType) {
-        for (SysLogType type : SysLogType.values()) {
+    public static SysLogTypeEnum get(String sysLogType) {
+        for (SysLogTypeEnum type : SysLogTypeEnum.values()) {
             if (type.code.equals(sysLogType)) {
                 return type;
             }

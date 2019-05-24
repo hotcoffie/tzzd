@@ -1,7 +1,7 @@
 package com.ttit.tzzd.sys.common;
 
 import com.ttit.tzzd.sys.entity.Dictionary;
-import com.ttit.tzzd.sys.enums.DictType;
+import com.ttit.tzzd.sys.enums.DictTypeEnum;
 import com.ttit.tzzd.sys.service.DictionaryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -76,7 +76,7 @@ public class DictHadler implements ApplicationListener<ContextRefreshedEvent> {
         return dict.get(type, key);
     }
 
-    public String get(DictType type, String key) {
+    public String get(DictTypeEnum type, String key) {
         return get(type.getCode(), key);
     }
 }

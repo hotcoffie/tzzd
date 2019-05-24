@@ -5,6 +5,7 @@ import com.ttit.tzzd.manager.entity.SysLog;
 import com.ttit.tzzd.sys.exceptions.NotNullException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -22,6 +23,7 @@ public class SysLogServiceImpl implements SysLogService {
     private SysLogDao sysLogDao;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public SysLog addLog(SysLog log) {
         if (log == null) {
             throw new NotNullException();
@@ -31,6 +33,7 @@ public class SysLogServiceImpl implements SysLogService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public SysLog addLog(String sysLogType, String content, String userId, Date createTime) {
         SysLog log = new SysLog(sysLogType, content, userId, createTime);
         return addLog(log);

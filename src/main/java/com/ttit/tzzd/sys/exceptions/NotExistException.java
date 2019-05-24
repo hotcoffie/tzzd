@@ -11,6 +11,6 @@ import com.ttit.tzzd.sys.common.Constant;
 public class NotExistException extends BusinessException {
 
     public NotExistException(String msg) {
-        super(Constant.EXC_MSG_NOT_EXIST + "，" + msg);
+        super(Constant.EXC_MSG_NOT_EXIST + msg);
     }
 }

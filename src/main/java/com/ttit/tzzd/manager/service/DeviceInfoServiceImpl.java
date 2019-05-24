@@ -5,13 +5,13 @@ import com.ttit.tzzd.manager.dao.DeviceGroupDao;
 import com.ttit.tzzd.manager.dao.DeviceInfoDao;
 import com.ttit.tzzd.manager.entity.DeviceGroup;
 import com.ttit.tzzd.manager.entity.DeviceInfo;
-import com.ttit.tzzd.manager.enums.DevLogType;
-import com.ttit.tzzd.manager.enums.DeviceStatus;
-import com.ttit.tzzd.manager.enums.SysLogType;
+import com.ttit.tzzd.manager.enums.DevLogTypeEnum;
+import com.ttit.tzzd.manager.enums.DeviceStatusEnum;
+import com.ttit.tzzd.manager.enums.SysLogTypeEnum;
 import com.ttit.tzzd.manager.vo.DeviceInfoVo;
 import com.ttit.tzzd.sys.common.Constant;
 import com.ttit.tzzd.sys.common.DictHadler;
-import com.ttit.tzzd.sys.enums.DictType;
+import com.ttit.tzzd.sys.enums.DictTypeEnum;
 import com.ttit.tzzd.sys.exceptions.NotExistException;
 import com.ttit.tzzd.sys.exceptions.NotNullException;
 import com.ttit.tzzd.sys.service.BaseService;
@@ -81,7 +81,7 @@ public class DeviceInfoServiceImpl extends BaseService implements DeviceInfoServ
     }
 
     @Override
-    @Transactional(rollbackFor = RuntimeException.class)
+    @Transactional(rollbackFor = Exception.class)
     public DeviceInfoVo regist(DeviceInfo deviceInfo) {
         //1.数据校验
         if (deviceInfo == null) {
@@ -91,7 +91,7 @@ public class DeviceInfoServiceImpl extends BaseService implements DeviceInfoServ
         //2.固定项配置
         String id = UuidUtils.generate();
         deviceInfo.setId(id);
-        deviceInfo.setDeviceStatus(DeviceStatus.online.getCode());
+        deviceInfo.setDeviceStatus(DeviceStatusEnum.online.getCode());
 
         //3.持久化
         Date now = new Date();
@@ -101,13 +101,13 @@ public class DeviceInfoServiceImpl extends BaseService implements DeviceInfoServ
 
         //4.记录设备日志
         String content = "设备注册：" + deviceInfo.toString();
-        deviceLogService.addLog(deviceInfo.getSerialNum(), DevLogType.regist.getCode(), content, now);
+        deviceLogService.addLog(deviceInfo.getSerialNum(), DevLogTypeEnum.regist.getCode(), content, now);
 
         return findById(id);
     }
 
     @Override
-    @Transactional(rollbackFor = RuntimeException.class)
+    @Transactional(rollbackFor = Exception.class)
     public DeviceInfoVo del(String id, String userId) {
         if (StringUtils.isBlank(id)) {
             throw new NotNullException();
@@ -123,15 +123,15 @@ public class DeviceInfoServiceImpl extends BaseService implements DeviceInfoServ
         String content = "删除设备：" + deviceInfo.toString();
         Date now = new Date();
         //记录系统日志
-        sysLogService.addLog(SysLogType.del.getCode(), content, userId, now);
+        sysLogService.addLog(SysLogTypeEnum.del.getCode(), content, userId, now);
         //记录设备日志
-        deviceLogService.addLog(deviceInfo.getSerialNum(), DevLogType.del.getCode(), content, now);
+        deviceLogService.addLog(deviceInfo.getSerialNum(), DevLogTypeEnum.del.getCode(), content, now);
         return deviceInfo;
     }
 
 
     @Override
-    @Transactional(rollbackFor = RuntimeException.class)
+    @Transactional(rollbackFor = Exception.class)
     public DeviceInfoVo modify(DeviceInfo deviceInfo, String userId) {
         //1.数据校验
         if (deviceInfo == null) {
@@ -152,7 +152,7 @@ public class DeviceInfoServiceImpl extends BaseService implements DeviceInfoServ
         //3.记日志，因为只是修改了业主信息，不计入设备日志
         String content = "修改设备信息，原数据：" + deviceInfoTest.toString() + "；新数据：" + deviceInfo.toString();
         Date now = new Date();
-        sysLogService.addLog(SysLogType.modify.getCode(), content, userId, now);
+        sysLogService.addLog(SysLogTypeEnum.modify.getCode(), content, userId, now);
 
         return findById(id);
     }
@@ -180,9 +180,9 @@ public class DeviceInfoServiceImpl extends BaseService implements DeviceInfoServ
         String content = "修改设备分组，原分组：" + deviceGroup.getName() + "；新分组：" + deviceInfo.getGroupName();
         Date now = new Date();
         //记录系统日志
-        sysLogService.addLog(SysLogType.modify.getCode(), content, userId, now);
+        sysLogService.addLog(SysLogTypeEnum.modify.getCode(), content, userId, now);
         //记录设备日志
-        deviceLogService.addLog(deviceInfo.getSerialNum(), DevLogType.modify.getCode(), content, now);
+        deviceLogService.addLog(deviceInfo.getSerialNum(), DevLogTypeEnum.modify.getCode(), content, now);
 
         return deviceInfo;
     }
@@ -208,22 +208,22 @@ public class DeviceInfoServiceImpl extends BaseService implements DeviceInfoServ
 
         String status;
         if (StringUtils.isBlank(redisValue)) {
-            status = DeviceStatus.offline.getCode();
+            status = DeviceStatusEnum.offline.getCode();
         } else {
             //如果Redis中有设备信息，用时间信息与当前时间做比对，超过中断阈值的视为中断， 超过离线阈值的视为离线
             long time = Long.parseLong(redisValue);
             long now = System.currentTimeMillis();
             long second = TimeUnit.MILLISECONDS.toSeconds(now - time);
             if (second <= timeLimitOnlie) {
-                status = DeviceStatus.online.getCode();
+                status = DeviceStatusEnum.online.getCode();
             } else if (second <= timeLimitbreaked) {
-                status = DeviceStatus.breaked.getCode();
+                status = DeviceStatusEnum.breaked.getCode();
             } else {
-                status = DeviceStatus.offline.getCode();
+                status = DeviceStatusEnum.offline.getCode();
             }
         }
         deviceInfo.setDeviceStatus(status);
-        String statusName = dictHadler.get(DictType.deviceStatus, status);
+        String statusName = dictHadler.get(DictTypeEnum.deviceStatus, status);
         deviceInfo.setDeviceStatusName(statusName);
     }
 }

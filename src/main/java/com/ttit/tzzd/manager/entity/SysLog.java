@@ -1,6 +1,6 @@
 package com.ttit.tzzd.manager.entity;
 
-import com.ttit.tzzd.manager.enums.SysLogType;
+import com.ttit.tzzd.manager.enums.SysLogTypeEnum;
 import com.ttit.tzzd.sys.common.Constant;
 import com.ttit.tzzd.sys.exceptions.BusinessException;
 import com.ttit.tzzd.sys.utils.UuidUtils;
@@ -69,7 +69,7 @@ public class SysLog implements Serializable {
     }
 
     public void setSysLogType(String sysLogType) {
-        SysLogType type = SysLogType.get(sysLogType);
+        SysLogTypeEnum type = SysLogTypeEnum.get(sysLogType);
         if (type == null) {
             throw new BusinessException("不存在编码[" + sysLogType + "]的设备日志类型！");
         }
