@@ -1,5 +1,6 @@
 package com.ttit.tzzd.manager.service;
 
+import com.github.pagehelper.PageInfo;
 import com.ttit.tzzd.manager.entity.DeviceLog;
 import com.ttit.tzzd.manager.exceptions.DeviceException;
 
@@ -12,6 +13,7 @@ import java.util.Date;
  * Date: 2019/5/239:32
  */
 public interface DeviceLogService {
+    PageInfo searchPage(String devLogType, String keyword, Integer pageNum, Integer pageSize, String orderBy);
     /**
      * 记录设备日志
      *

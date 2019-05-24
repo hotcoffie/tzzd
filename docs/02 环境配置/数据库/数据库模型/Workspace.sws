@@ -4,7 +4,7 @@
 
 <Workspace>
 	<Local Expanded="Yes">
-		<Model Expanded="Yes" ID="{BBBA7D2B-D892-4D18-A967-2D3AD9CC61DC}" Name="投注终端管理系统" Type="{CDE44E21-9669-11D1-9914-006097355D9B}" URL="投注终端管理系统.pdm"/>
+		<Model Expanded="Yes" ID="{BBBA7D2B-D892-4D18-A967-2D3AD9CC61DC}" Name="投注终端管理系统" Selected="Yes" Type="{CDE44E21-9669-11D1-9914-006097355D9B}" URL="投注终端管理系统.pdm"/>
 	</Local>
 	<BrowserModule Name="Repository"/>
 </Workspace>

@@ -35,15 +35,15 @@ public class SoftManager implements Serializable {
 	private String softId;
 
 	/** 创建人ID */
-  	@ApiModelProperty(value = "创建人ID" )
+	@ApiModelProperty(value = "创建人ID", hidden = true)
 	private String creator;
 
 	/** 创建时间 */
-  	@ApiModelProperty(value = "创建时间" )
+  	@ApiModelProperty(value = "创建时间", hidden = true )
 	private Date createTime;
 
 	/** 更新时间 */
-	@ApiModelProperty(value = "更新时间" )
+	@ApiModelProperty(value = "更新时间", hidden = true )
 	private Date updateTime;
 
 	/** 删除标识:1删除0未删除 */

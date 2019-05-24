@@ -1,5 +1,6 @@
 package com.ttit.tzzd.sys.service;
 
+import com.github.pagehelper.PageInfo;
 import com.ttit.tzzd.sys.entity.SysLog;
 
 import java.util.Date;
@@ -23,4 +24,5 @@ public interface SysLogService {
      */
     SysLog addLog(String sysLogType, String content, String userId, Date createTime);
 
+    PageInfo searchPage(String sysLogType, String keyword, Integer pageNum, Integer pageSize, String orderBy);
 }

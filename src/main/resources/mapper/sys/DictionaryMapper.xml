@@ -4,14 +4,16 @@
     <select id="listForDict" resultType="com.ttit.tzzd.sys.entity.Dictionary">
         SELECT type, code, value
         FROM sys_dictionary
-        where is_del = '0'
+        WHERE is_del = '0'
         ORDER BY order_num DESC
     </select>
     <select id="listByType" parameterType="string" resultType="com.ttit.tzzd.sys.entity.Dictionary">
-        select *
-        from sys_dictionary
-        where is_del = '0'
-          and type = #{type}
+        SELECT *
+        FROM sys_dictionary
+        WHERE is_del = '0'
+        <if test="type!=null and type!=''">
+            AND type = #{type}
+        </if>
         ORDER BY order_num DESC
     </select>
 </mapper>

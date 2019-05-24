@@ -16,7 +16,7 @@
         <where>
             is_del = '0'
             <if test="devLogType!=null and devLogType!=''">
-                dict_dev_log_type=#{devLogType}
+                AND dict_dev_log_type=#{devLogType}
             </if>
             <if test="keyword!=null and keyword!=''">
                 <bind name="pattern" value="'%' + _parameter.keyword + '%'"/>

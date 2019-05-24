@@ -14,4 +14,6 @@ public interface DictionaryService {
     List<Dictionary> listForDict();
 
     List<Dictionary> listByType(String type);
+
+    List<Dictionary> list(String type);
 }

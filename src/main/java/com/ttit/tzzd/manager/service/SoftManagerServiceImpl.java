@@ -1,11 +1,11 @@
 package com.ttit.tzzd.manager.service;
 
+import com.ttit.tzzd.manager.dao.SoftInfoDao;
 import com.ttit.tzzd.manager.dao.SoftManagerDao;
+import com.ttit.tzzd.manager.entity.SoftInfo;
 import com.ttit.tzzd.manager.entity.SoftManager;
 import com.ttit.tzzd.manager.vo.SoftManagerVo;
 import com.ttit.tzzd.sys.common.Constant;
-import com.ttit.tzzd.sys.entity.Dictionary;
-import com.ttit.tzzd.sys.enums.DictTypeEnum;
 import com.ttit.tzzd.sys.enums.SysLogTypeEnum;
 import com.ttit.tzzd.sys.exceptions.BusinessException;
 import com.ttit.tzzd.sys.exceptions.NotExistException;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,13 +33,35 @@ public class SoftManagerServiceImpl implements SoftManagerService {
     @Resource
     private SoftManagerDao softManagerDao;
     @Resource
+    private SoftInfoDao softInfoDao;
+    @Resource
     private SysLogService sysLogService;
     @Resource
     private DictionaryService dictionaryService;
 
     @Override
     public List<SoftManagerVo> list() {
-        return softManagerDao.list();
+        List<SoftManagerVo> managers = softManagerDao.list();
+        List<SoftInfo> softs = softInfoDao.searchPage(null, null);
+        //通过遍历，将当前所有软件信息附加到对应软件管理信息中，便于用户下拉切换
+        managers.forEach(manager -> {
+            List<SoftInfo> children = manager.getSofts();
+            if (children == null) {
+                children = new ArrayList<>();
+            }
+            String managerSoftType = manager.getSoftType();
+            for (SoftInfo soft : softs) {
+                String softType = soft.getSoftType();
+                if (StringUtils.isBlank(softType)) {
+                    continue;
+                }
+                if (softType.equals(managerSoftType)) {
+                    children.add(soft);
+                }
+            }
+            manager.setSofts(children);
+        });
+        return managers;
     }
 
     @Override

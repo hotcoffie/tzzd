@@ -3,20 +3,20 @@
 
     <select id="list" parameterType="String" resultType="com.ttit.tzzd.manager.vo.SoftManagerVo">
         SELECT t2.id,
-               t2.dict_soft_type `softType`,
-               t1.`value`        `typeName`,
+               t1.code    `softType`,
+               t1.`value` `typeName`,
                t2.version,
-               fk_soft_id        `softId`,
-               t3.name           `softName`,
+               t3.id `softId`,
+               t3.name    `softName`,
                t2.creator,
                t2.create_time,
                t2.update_time
         FROM sys_dictionary t1
                  LEFT JOIN soft_manager t2 ON t1.code = t2.dict_soft_type AND t2.is_del = 0
-                 LEFT JOIN soft_info t3 ON t2.fk_soft_id = t3.id AND t3.is_del = 0
+                 LEFT JOIN soft_info t3 ON t1.code = t3.dict_soft_type AND t2.fk_soft_id = t3.id AND t3.is_del = 0
         WHERE t1.is_del = 0
           AND t1.type = 'softType'
-        ORDER BY t1.code
+        ORDER BY t1.order_num DESC, t1.code
     </select>
 
     <select id="findBySoftType" parameterType="string" resultType="com.ttit.tzzd.manager.entity.SoftManager">

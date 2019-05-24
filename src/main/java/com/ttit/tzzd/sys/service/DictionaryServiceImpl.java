@@ -28,4 +28,9 @@ public class DictionaryServiceImpl implements DictionaryService {
         return dictionaryDao.listByType(type);
     }
 
+    @Override
+    public List<Dictionary> list(String type) {
+        return dictionaryDao.listByType(type);
+    }
+
 }
