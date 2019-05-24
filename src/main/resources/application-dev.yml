@@ -33,7 +33,9 @@ logging:
     com.ttit.tzzd.dao: debug
 
 business:
-  url: localhost
+  server:
+    #对外暴露附件服务的根路径
+    atta-url: localhost:9100
   dict:
     #使用内建版数据字典
     save-type: "app"

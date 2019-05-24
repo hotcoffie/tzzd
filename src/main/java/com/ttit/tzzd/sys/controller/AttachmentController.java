@@ -27,7 +27,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/sys/atta")
 @Slf4j
-@Api(tags = "附件管理")
+@Api(tags = "系统-附件管理")
 public class AttachmentController {
 
     @Autowired

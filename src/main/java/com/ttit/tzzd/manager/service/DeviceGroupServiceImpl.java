@@ -49,6 +49,7 @@ public class DeviceGroupServiceImpl extends BaseService implements DeviceGroupSe
         //2.固定项配置
         String id = UuidUtils.generate();
         deviceGroup.setId(id);
+        deviceGroup.setCreator(userId);
 
         //3.持久化
         deviceGroupDao.add(deviceGroup);
@@ -56,7 +57,7 @@ public class DeviceGroupServiceImpl extends BaseService implements DeviceGroupSe
         //4.记录设备日志
         String content = "新增设备分组：" + deviceGroup.toString();
         Date now = new Date();
-        sysLogService.addLog(SysLogTypeEnum.del.getCode(), content, userId, now);
+        sysLogService.addLog(SysLogTypeEnum.modify.getCode(), content, userId, now);
 
         return deviceGroupDao.findById(id);
     }

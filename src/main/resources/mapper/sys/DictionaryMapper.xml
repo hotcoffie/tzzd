@@ -7,5 +7,11 @@
         where is_del = '0'
         ORDER BY order_num DESC
     </select>
-
+    <select id="listByType" parameterType="string" resultType="com.ttit.tzzd.sys.entity.Dictionary">
+        select *
+        from sys_dictionary
+        where is_del = '0'
+          and type = #{type}
+        ORDER BY order_num DESC
+    </select>
 </mapper>

@@ -1,6 +1,7 @@
 package com.ttit.tzzd.sys.dao;
 
 import com.ttit.tzzd.sys.entity.Dictionary;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -12,4 +13,7 @@ import java.util.List;
  */
 public interface DictionaryDao {
     List<Dictionary> listForDict();
+
+    List<Dictionary> listByType(@Param("type") String type);
+
 }

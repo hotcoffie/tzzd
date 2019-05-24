@@ -21,7 +21,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/manager/device/info")
-@Api(tags = "设备信息")
+@Api(tags = "业务-设备信息")
 public class DeviceInfoController {
 
     @Resource

@@ -22,4 +22,10 @@ public class DictionaryServiceImpl implements DictionaryService {
     public List<Dictionary> listForDict() {
         return dictionaryDao.listForDict();
     }
+
+    @Override
+    public List<Dictionary> listByType(String type) {
+        return dictionaryDao.listByType(type);
+    }
+
 }

@@ -2,7 +2,6 @@ package com.ttit.tzzd.manager.service;
 
 import com.github.pagehelper.PageInfo;
 import com.ttit.tzzd.manager.entity.SoftInfo;
-import com.ttit.tzzd.manager.vo.SoftInfoVo;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -12,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
  * Date: 2019/5/2317:16
  */
 public interface SoftInfoService {
-    SoftInfoVo add(String softType, MultipartFile webFile, String userId);
+    SoftInfo add(String softType, MultipartFile webFile, String userId);
 
     SoftInfo del(String id, String userId);
 

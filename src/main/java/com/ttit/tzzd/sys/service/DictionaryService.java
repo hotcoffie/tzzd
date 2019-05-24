@@ -12,4 +12,6 @@ import java.util.List;
  */
 public interface DictionaryService {
     List<Dictionary> listForDict();
+
+    List<Dictionary> listByType(String type);
 }

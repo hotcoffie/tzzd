@@ -20,7 +20,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/sys/dict")
 @Slf4j
-@Api(tags = "数据字典")
+@Api(tags = "系统-数据字典")
 public class DictionaryController {
     @Resource
     private DictHadler dictHadler;

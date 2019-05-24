@@ -159,6 +159,7 @@ public class DeviceInfoServiceImpl extends BaseService implements DeviceInfoServ
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public DeviceInfoVo modifyGroup(String id, String groupId, String userId) {
         //1.数据校验
         if (StringUtils.isBlank(id) || StringUtils.isBlank(groupId)) {

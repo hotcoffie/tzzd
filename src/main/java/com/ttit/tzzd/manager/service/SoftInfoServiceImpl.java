@@ -3,7 +3,6 @@ package com.ttit.tzzd.manager.service;
 import com.github.pagehelper.PageInfo;
 import com.ttit.tzzd.manager.dao.SoftInfoDao;
 import com.ttit.tzzd.manager.entity.SoftInfo;
-import com.ttit.tzzd.manager.vo.SoftInfoVo;
 import com.ttit.tzzd.sys.common.Constant;
 import com.ttit.tzzd.sys.entity.Attachment;
 import com.ttit.tzzd.sys.enums.SysLogTypeEnum;
@@ -39,35 +38,31 @@ public class SoftInfoServiceImpl extends BaseService implements SoftInfoService 
     private AttachmentService attachmentService;
 
     /**
-     * 服务器对外暴露的路径
+     * 对外暴露附件服务的根路径
      */
-    @Value("${business.url}")
-    private String applicationUrl;
-
-    @Value("${server.port}")
-    private String serverPort;
+    @Value("${business.server.atta-url}")
+    private String attaUrl;
 
     @Override
     public PageInfo searchPage(String softType, String keyword, Integer pageNum, Integer pageSize, String orderBy) {
         startPage(pageNum, pageSize, orderBy);
-        List<com.ttit.tzzd.manager.vo.SoftInfoVo> list = softInfoDao.searchPage(softType, keyword);
-        list.forEach(vo -> vo.setUrl(applicationUrl + ":" + serverPort + Constant.DOWNLOAD_PATH + vo.getAttaId()));
+        List<SoftInfo> list = softInfoDao.searchPage(softType, keyword);
         return new PageInfo<>(list);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SoftInfoVo add(String softType, MultipartFile webFile, String userId) {
+    public SoftInfo add(String softType, MultipartFile webFile, String userId) {
         //1.调用系统附件服务
         Attachment attachment = attachmentService.upload(webFile, userId);
 
         //2.持久化软件信息
-        SoftInfo softInfo = new SoftInfo(UuidUtils.generate(), softType, attachment.getId(), userId);
+        //拼接附件下载路径
+        String url = attaUrl + Constant.DOWNLOAD_PATH + attachment.getId();
+        SoftInfo softInfo = new SoftInfo(UuidUtils.generate(), softType, attachment.getName(), url, userId);
         softInfoDao.add(softInfo);
 
-        SoftInfoVo vo = softInfoDao.findById(softInfo.getId());
-        vo.setUrl(applicationUrl + ":" + serverPort + Constant.DOWNLOAD_PATH + vo.getAttaId());
-        return vo;
+        return softInfoDao.findById(softInfo.getId());
     }
 
     @Override

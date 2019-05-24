@@ -20,7 +20,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/manager/device/group")
-@Api(tags = "设备分组信息")
+@Api(tags = "业务-设备分组信息")
 public class DeviceGroupController {
 
     @Resource

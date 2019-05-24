@@ -33,10 +33,16 @@ public class SoftInfo implements Serializable {
     private String softType;
 
     /**
-     * 附件ID
+     * 软件名称
      */
-    @ApiModelProperty(value = "附件ID")
-    private String attaId;
+    @ApiModelProperty(value = "软件名称")
+    private String name;
+
+    /**
+     * 下载地址
+     */
+    @ApiModelProperty(value = "下载地址")
+    private String url;
 
     /**
      * 创建人ID
@@ -57,10 +63,11 @@ public class SoftInfo implements Serializable {
     private String isDel = Constant.IS_NOT_DEL;
 
 
-    public SoftInfo(String id, String softType, String attaId, String creator) {
+    public SoftInfo(String id, String softType, String name, String url, String creator) {
         this.id = id;
         this.softType = softType;
-        this.attaId = attaId;
+        this.name = name;
+        this.url = url;
         this.creator = creator;
     }
 

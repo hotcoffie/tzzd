@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2019/5/24 14:01:19                           */
+/* Created on:     2019/5/24 15:40:27                           */
 /*==============================================================*/
 
 
@@ -113,7 +113,8 @@ create table soft_info
 (
    id                   varchar(32) not null comment 'id',
    dict_soft_type       varchar(50) comment '(字典)软件所属类型编码',
-   fk_atta_id           varchar(32) comment '附件ID',
+   name                 varchar(100) comment '软件名称',
+   url                  varchar(200) comment '下载地址',
    creator              varchar(32) default '1' comment '创建人ID',
    create_time          timestamp default CURRENT_TIMESTAMP comment '创建时间',
    is_del               char default '0' comment '删除标识:1删除0未删除',

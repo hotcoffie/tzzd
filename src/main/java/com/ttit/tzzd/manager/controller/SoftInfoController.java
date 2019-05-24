@@ -3,9 +3,7 @@ package com.ttit.tzzd.manager.controller;
 import com.github.pagehelper.PageInfo;
 import com.ttit.tzzd.manager.entity.SoftInfo;
 import com.ttit.tzzd.manager.service.SoftInfoService;
-import com.ttit.tzzd.manager.vo.SoftInfoVo;
 import com.ttit.tzzd.sys.common.Constant;
-import com.ttit.tzzd.sys.common.DictHadler;
 import com.ttit.tzzd.sys.vo.ResultVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.annotation.Resource;
 
 /**
  * Description: 软件信息
@@ -26,13 +22,11 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/manager/soft/info")
 @Slf4j
-@Api(tags = "软件信息")
+@Api(tags = "业务-软件信息")
 public class SoftInfoController {
 
     @Autowired
     private SoftInfoService softInfoService;
-    @Resource
-    private DictHadler dictHadler;
 
     @GetMapping("page")
     @ApiOperation(value = "分页查询文件列表", notes = "")
@@ -49,7 +43,7 @@ public class SoftInfoController {
     @ApiOperation(value = "上传软件", notes = "")
     public ResultVo upload(@ApiParam(value = "软件所属类型编码") @RequestParam String softType,
                            @ApiParam(value = "上传的软件") MultipartFile webFile) {
-        SoftInfoVo info = softInfoService.add(softType, webFile, Constant.USER_ID_ADMIN);
+        SoftInfo info = softInfoService.add(softType, webFile, Constant.USER_ID_ADMIN);
         return ResultVo.success(info);
     }
 
