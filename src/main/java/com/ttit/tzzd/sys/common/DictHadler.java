@@ -41,6 +41,7 @@ public class DictHadler implements ApplicationListener<ContextRefreshedEvent> {
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        log.info("初始化数据字典...");
         initDict();
     }
 
@@ -48,7 +49,7 @@ public class DictHadler implements ApplicationListener<ContextRefreshedEvent> {
      * 初始化码表
      */
     private void initDict() {
-        log.info("开始初始化数据字典");
+        log.info("从数据库查询字典信息...");
         List<Dictionary> list = dictionaryService.listForDict();
         if (list == null || list.isEmpty()) {
             log.warn("未查询到字典信息！");
@@ -56,19 +57,19 @@ public class DictHadler implements ApplicationListener<ContextRefreshedEvent> {
         }
 
         int len = list.size();
-        log.info("共查询到{}字典信息", len);
+        log.info("共查询到{}条字典信息", len);
         if (Constant.DICT_SAVE_TYPE_REDIS.equals(saveType)) {
             dict = new DictInRedis();
         } else {
             dict = new DictInApplication();
         }
         dict.init(list);
-        log.info("数据字典初始化完毕");
+        log.info("数据字典初始化完毕！");
     }
 
     public String get(String type, String key) {
         if (dict == null) {
-            initDict();
+            refresh();
         }
         if (dict == null) {
             return "";
@@ -78,5 +79,10 @@ public class DictHadler implements ApplicationListener<ContextRefreshedEvent> {
 
     public String get(DictTypeEnum type, String key) {
         return get(type.getCode(), key);
+    }
+
+    public void refresh() {
+        log.info("刷新数据字典...");
+        initDict();
     }
 }
