@@ -9,11 +9,11 @@ spring:
       # 一次请求文件大小
       max-request-size: 102400KB
   datasource:
-    url: jdbc:mysql://172.18.0.58:3306/tzzd?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://192.168.0.120:3306/tzzd?useUnicode=true&characterEncoding=utf-8
     username: root
     password: root123
   redis:
-    host: 172.18.0.58
+    host: 192.168.0.120
     database: 0
     port: 6379
     password: ''
@@ -48,4 +48,4 @@ business:
     online: 10
     #上次收到信号，超过online时间，小于breaked时间，视为中断；大于breaked时间，视为离线
     breaked: 40
-  file-upload-path: E:\Projects\tzzd\softs\
+  file-upload-path: E:\JAVA\workspace\tzzd\softs\
