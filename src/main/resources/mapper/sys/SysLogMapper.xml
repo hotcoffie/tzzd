@@ -14,7 +14,7 @@
         FROM sys_log
         <where>
             is_del = '0'
-            <if test="devLogType!=null and devLogType!=''">
+            <if test="sysLogType!=null and sysLogType!=''">
                 AND dict_sys_log_type=#{sysLogType}
             </if>
             <if test="keyword!=null and keyword!=''">
