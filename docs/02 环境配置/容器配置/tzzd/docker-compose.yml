@@ -8,14 +8,16 @@ services:
         ipv4_address: 172.19.0.2
     ports:
       - '3306:3306'
+    #设置utf8字符集
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - ./mysql/data:/var/lib/mysql
       - ./mysql/conf:/etc/mysql/conf.d
       - ./mysql/init:/docker-entrypoint-initdb.d/
     environment:
       - "MYSQL_ROOT_PASSWORD=root123"
-      - "MYSQL_DATABASE=tzzd"
       - "MYSQL_ROOT_HOST=%"
+      - "MYSQL_DATABASE=tzzd"
     restart: always
   redis:
     image: 'redis:latest'
