@@ -1,5 +1,6 @@
 package com.ttit.tzzd.manager.service;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ttit.tzzd.manager.dao.DeviceInfoDao;
 import com.ttit.tzzd.manager.dao.DeviceLogDao;
@@ -11,7 +12,6 @@ import com.ttit.tzzd.sys.common.DictHadler;
 import com.ttit.tzzd.sys.enums.DictTypeEnum;
 import com.ttit.tzzd.sys.exceptions.BusinessException;
 import com.ttit.tzzd.sys.exceptions.NotNullException;
-import com.ttit.tzzd.sys.service.BaseService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +26,7 @@ import java.util.List;
  * Date: 2019/5/239:32
  */
 @Service
-public class DeviceLogServiceImpl extends BaseService implements DeviceLogService {
+public class DeviceLogServiceImpl implements DeviceLogService {
     @Resource
     private DeviceLogDao deviceLogDao;
     @Resource
@@ -36,7 +36,7 @@ public class DeviceLogServiceImpl extends BaseService implements DeviceLogServic
 
     @Override
     public PageInfo searchPage(String devLogType, String keyword, Integer pageNum, Integer pageSize, String orderBy) {
-        startPage(pageNum, pageSize, orderBy);
+        PageHelper.startPage(pageNum, pageSize, orderBy);
         List<DeviceLogVo> list = deviceLogDao.searchPage(devLogType, keyword);
         //遍历翻译日志类型
         list.forEach(devLog -> {

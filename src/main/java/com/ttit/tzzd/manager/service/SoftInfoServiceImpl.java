@@ -1,5 +1,6 @@
 package com.ttit.tzzd.manager.service;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ttit.tzzd.manager.dao.SoftInfoDao;
 import com.ttit.tzzd.manager.entity.SoftInfo;
@@ -9,7 +10,6 @@ import com.ttit.tzzd.sys.enums.SysLogTypeEnum;
 import com.ttit.tzzd.sys.exceptions.NotExistException;
 import com.ttit.tzzd.sys.exceptions.NotNullException;
 import com.ttit.tzzd.sys.service.AttachmentService;
-import com.ttit.tzzd.sys.service.BaseService;
 import com.ttit.tzzd.sys.service.SysLogService;
 import com.ttit.tzzd.sys.utils.UuidUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +29,7 @@ import java.util.List;
  * Date: 2019/5/2317:17
  */
 @Service
-public class SoftInfoServiceImpl extends BaseService implements SoftInfoService {
+public class SoftInfoServiceImpl implements SoftInfoService {
     @Resource
     private SoftInfoDao softInfoDao;
     @Resource
@@ -45,7 +45,7 @@ public class SoftInfoServiceImpl extends BaseService implements SoftInfoService 
 
     @Override
     public PageInfo searchPage(String softType, String keyword, Integer pageNum, Integer pageSize, String orderBy) {
-        startPage(pageNum, pageSize, orderBy);
+        PageHelper.startPage(pageNum, pageSize, orderBy);
         List<SoftInfo> list = softInfoDao.searchPage(softType, keyword);
         return new PageInfo<>(list);
     }

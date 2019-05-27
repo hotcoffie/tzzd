@@ -3,11 +3,12 @@
 
     <select id="list" parameterType="String" resultType="com.ttit.tzzd.manager.vo.SoftManagerVo">
         SELECT t2.id,
-               t1.code    `softType`,
-               t1.`value` `typeName`,
+               t1.code             `softType`,
+               t1.`value`          `typeName`,
                t2.version,
-               t3.id `softId`,
-               t3.name    `softName`,
+               IFNULL(t3.id, '')   `softId`,
+               IFNULL(t3.name, '') `softName`,
+               IFNULL(t3.url, '')  `url`,
                t2.creator,
                t2.create_time,
                t2.update_time
@@ -26,7 +27,14 @@
           and is_del = 0
     </select>
     <select id="findById" parameterType="string" resultType="com.ttit.tzzd.manager.entity.SoftManager">
-        select *
+        select id,
+               dict_soft_type `softType`,
+               version,
+               fk_soft_id `softId`,
+               creator,
+               create_time,
+               update_time,
+               is_del
         from soft_manager
         where id = #{id}
           and is_del = 0

@@ -1,5 +1,6 @@
 package com.ttit.tzzd.manager.service;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ttit.tzzd.manager.dao.DeviceGroupDao;
 import com.ttit.tzzd.manager.dao.DeviceInfoDao;
@@ -7,14 +8,16 @@ import com.ttit.tzzd.manager.entity.DeviceGroup;
 import com.ttit.tzzd.manager.entity.DeviceInfo;
 import com.ttit.tzzd.manager.enums.DevLogTypeEnum;
 import com.ttit.tzzd.manager.enums.DeviceStatusEnum;
-import com.ttit.tzzd.sys.enums.SysLogTypeEnum;
+import com.ttit.tzzd.manager.enums.ReportTypeEnum;
+import com.ttit.tzzd.manager.vo.DevReportVo;
 import com.ttit.tzzd.manager.vo.DeviceInfoVo;
 import com.ttit.tzzd.sys.common.Constant;
 import com.ttit.tzzd.sys.common.DictHadler;
 import com.ttit.tzzd.sys.enums.DictTypeEnum;
+import com.ttit.tzzd.sys.enums.SysLogTypeEnum;
+import com.ttit.tzzd.sys.exceptions.BusinessException;
 import com.ttit.tzzd.sys.exceptions.NotExistException;
 import com.ttit.tzzd.sys.exceptions.NotNullException;
-import com.ttit.tzzd.sys.service.BaseService;
 import com.ttit.tzzd.sys.service.SysLogService;
 import com.ttit.tzzd.sys.utils.UuidUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +40,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 @Slf4j
-public class DeviceInfoServiceImpl extends BaseService implements DeviceInfoService {
+public class DeviceInfoServiceImpl implements DeviceInfoService {
     @Resource
     private StringRedisTemplate stringRedisTemplate;
     @Resource
@@ -53,7 +56,7 @@ public class DeviceInfoServiceImpl extends BaseService implements DeviceInfoServ
 
     @Override
     public PageInfo searchPage(String groupId, String keyword, Integer pageNum, Integer pageSize, String orderBy) {
-        startPage(pageNum, pageSize, orderBy);
+        PageHelper.startPage(pageNum, pageSize, orderBy);
         List<DeviceInfoVo> list = deviceInfoDao.searchPage(groupId, keyword);
         //从Redis查询最新的注册信息
         list.forEach(this::updateByRedis);
@@ -83,7 +86,7 @@ public class DeviceInfoServiceImpl extends BaseService implements DeviceInfoServ
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public DeviceInfoVo regist(DeviceInfo deviceInfo) {
+    public DeviceInfoVo regist(DeviceInfo deviceInfo, String userId) {
         //1.数据校验
         if (deviceInfo == null) {
             throw new NotNullException();
@@ -93,15 +96,15 @@ public class DeviceInfoServiceImpl extends BaseService implements DeviceInfoServ
         String id = UuidUtils.generate();
         deviceInfo.setId(id);
         deviceInfo.setDeviceStatus(DeviceStatusEnum.online.getCode());
+        deviceInfo.setCreator(userId);
 
         //3.持久化
         Date now = new Date();
         deviceInfoDao.add(deviceInfo);
-        //注册时间以long的字符串存入，这样是为了方便取出
-        stringRedisTemplate.opsForValue().set(id, "" + now.getTime());
 
-        //4.记录设备日志
+        //4.记录日志
         String content = "设备注册：" + deviceInfo.toString();
+        sysLogService.addLog(SysLogTypeEnum.regist.getCode(), content, userId, now);
         deviceLogService.addLog(deviceInfo.getSerialNum(), DevLogTypeEnum.regist.getCode(), content, now);
 
         return findById(id);
@@ -189,6 +192,52 @@ public class DeviceInfoServiceImpl extends BaseService implements DeviceInfoServ
         return deviceInfo;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void report(DevReportVo reportVo) {
+        if (reportVo == null || StringUtils.isBlank(reportVo.getDevId())) {
+            throw new NotNullException();
+        }
+        String devId = reportVo.getDevId();
+        DeviceInfoVo deviceInfo = legalize(devId, reportVo.getDevSerialNum(), reportVo.getDevSerialCode());
+        //定义了6种设备日志类型，但设备上报接口只接收其中5上线6下线7异常三种
+
+        //记录设备日志
+        String reportType = reportVo.getReportType();
+        Date now = new Date();
+        if (ReportTypeEnum.login.getCode().equalsIgnoreCase(reportType)) {
+            //redis中更新设备状态
+            stringRedisTemplate.opsForValue().set(devId, String.valueOf(now.getTime()));
+            //记录设备日志
+            deviceLogService.addLog(deviceInfo.getSerialNum(), reportType, "设备上线", now);
+        } else if (ReportTypeEnum.logout.getCode().equalsIgnoreCase(reportType)) {
+            //redis中移除下线的设备
+            stringRedisTemplate.delete(devId);
+            //数据库记录下线时间
+            deviceInfoDao.updateLogout(devId, DeviceStatusEnum.offline.getCode(), now);
+            //记录设备日志
+            deviceLogService.addLog(deviceInfo.getSerialNum(), reportType, "设备下线", now);
+        } else if (ReportTypeEnum.error.getCode().equalsIgnoreCase(reportType)) {
+            deviceLogService.addLog(deviceInfo.getSerialNum(), reportType, reportVo.getReportMsg(), now);
+        }
+
+        throw new BusinessException("日志上报类型有误！");
+    }
+
+    @Override
+    public DeviceInfoVo legalize(String id, String serialNum, String serialCode) {
+        if (StringUtils.isBlank(id) || StringUtils.isBlank(serialNum) || StringUtils.isBlank(serialCode)) {
+            throw new NotNullException();
+        }
+        DeviceInfoVo deviceInfoVo = deviceInfoDao.findById(id);
+        if (deviceInfoVo == null ||
+                !serialNum.equalsIgnoreCase(deviceInfoVo.getSerialNum()) ||
+                !serialCode.equalsIgnoreCase(deviceInfoVo.getSerialCode())) {
+            throw new NotExistException(" 设备序列号：" + serialNum + " 设备串码：" + serialCode);
+        }
+        return deviceInfoVo;
+    }
+
     /**
      * 设备连接时限，单位秒
      * 上次收到信号，在online时间内，视为在线
@@ -222,6 +271,7 @@ public class DeviceInfoServiceImpl extends BaseService implements DeviceInfoServ
                 status = DeviceStatusEnum.breaked.getCode();
             } else {
                 status = DeviceStatusEnum.offline.getCode();
+                stringRedisTemplate.delete(deviceInfo.getId());
             }
         }
         deviceInfo.setDeviceStatus(status);

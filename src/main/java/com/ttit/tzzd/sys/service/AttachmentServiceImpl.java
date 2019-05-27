@@ -1,10 +1,10 @@
 package com.ttit.tzzd.sys.service;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ttit.tzzd.sys.common.Constant;
 import com.ttit.tzzd.sys.dao.AttachmentDao;
 import com.ttit.tzzd.sys.entity.Attachment;
-import com.ttit.tzzd.sys.enums.SysLogTypeEnum;
 import com.ttit.tzzd.sys.exceptions.BusinessException;
 import com.ttit.tzzd.sys.exceptions.NotExistException;
 import com.ttit.tzzd.sys.exceptions.NotNullException;
@@ -26,7 +26,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,7 +36,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class AttachmentServiceImpl extends BaseService implements AttachmentService {
+public class AttachmentServiceImpl implements AttachmentService {
     @Resource
     private AttachmentDao attachmentDao;
     @Resource
@@ -50,7 +49,7 @@ public class AttachmentServiceImpl extends BaseService implements AttachmentServ
 
     @Override
     public PageInfo searchPage(String keyword, Integer pageNum, Integer pageSize, String orderBy) {
-        startPage(pageNum, pageSize, orderBy);
+        PageHelper.startPage(pageNum, pageSize, orderBy);
         List<Attachment> list = attachmentDao.searchPage(keyword);
         return new PageInfo<>(list);
     }

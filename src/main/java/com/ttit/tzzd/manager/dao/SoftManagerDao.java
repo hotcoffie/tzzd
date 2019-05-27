@@ -23,6 +23,6 @@ public interface SoftManagerDao {
 
     Integer del(@Param("id") String id);
 
-    Integer modify(SoftManager softManager);
+    Integer modify(@Param("id") String id, @Param("softId") String softId, @Param("version") String version);
 
 }

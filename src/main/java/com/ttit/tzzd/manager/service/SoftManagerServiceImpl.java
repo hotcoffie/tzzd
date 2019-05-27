@@ -18,9 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Description:
@@ -114,4 +113,51 @@ public class SoftManagerServiceImpl implements SoftManagerService {
         return softManager;
     }
 
+    @Override
+    public List<Map<String, String>> updateInfo() {
+        List<SoftManagerVo> managers = softManagerDao.list();
+        return managers.stream().map(manager -> {
+            Map<String, String> soft = new HashMap<>();
+            soft.put("softType", manager.getSoftType());
+            soft.put("typeName", manager.getTypeName());
+            soft.put("version", manager.getVersion());
+            soft.put("url", manager.getUrl());
+            soft.put("softName", manager.getSoftName());
+            return soft;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public SoftManager modify(String id, String softId, String version, String userId) {
+        //1.数据校验
+        if (StringUtils.isBlank(id) ||
+                StringUtils.isBlank(softId) ||
+                StringUtils.isBlank(version)) {
+            throw new NotNullException();
+        }
+        SoftManager softManagerTest = softManagerDao.findById(id);
+        SoftInfo softInfo = softInfoDao.findById(softId);
+        if (softManagerTest == null || Constant.IS_DEL.equals(softManagerTest.getIsDel())) {
+            throw new NotExistException("软件分类ID:" + id);
+        }
+        if (softInfo == null || Constant.IS_DEL.equals(softInfo.getIsDel())) {
+            throw new NotExistException("软件ID:" + id);
+        }
+        if (!StringUtils.equalsIgnoreCase(softInfo.getSoftType(), softManagerTest.getSoftType())) {
+            throw new BusinessException("软件分类不匹配！分类编码：" + softManagerTest.getSoftType() + ",软件分类编码：" + softInfo.getSoftType());
+        }
+
+        //2.持久化
+        softManagerDao.modify( id,  softId,  version);
+
+        //3.记日志
+        SoftManager softManagerNew = softManagerDao.findById(id);
+        String content = "更新软件版本。旧：" + softManagerTest.toString() + " 新：" + softManagerNew.toString();
+        Date now = new Date();
+        //记录系统日志
+        sysLogService.addLog(SysLogTypeEnum.modify.getCode(), content, userId, now);
+
+        return softManagerNew;
+    }
 }

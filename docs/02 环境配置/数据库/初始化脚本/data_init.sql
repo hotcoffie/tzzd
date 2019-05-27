@@ -33,7 +33,7 @@ INSERT INTO `tzzd`.`sys_dictionary` (`id`, `type`, `type_name`, `code`, `value` 
 INSERT INTO `tzzd`.`sys_dictionary` (`id`, `type`, `type_name`, `code`, `value` ) VALUES (UUID_SHORT(), 'softType', '软件类型', '5', '快乐十分');
 INSERT INTO `tzzd`.`sys_dictionary` (`id`, `type`, `type_name`, `code`, `value` ) VALUES (UUID_SHORT(), 'softType', '软件类型', '6', '打印机');
 
-
-
+-- 初始化软件管理信息
+INSERT INTO soft_manager ( id, dict_soft_type, version, creator ) SELECT REPLACE (UUID(), '-', ''), `code`, '1.0.0', 1 FROM sys_dictionary WHERE type = 'softType' ORDER BY order_num DESC, `code`;
 
 

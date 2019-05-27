@@ -3,6 +3,7 @@ package com.ttit.tzzd.manager.controller;
 import com.github.pagehelper.PageInfo;
 import com.ttit.tzzd.manager.entity.DeviceInfo;
 import com.ttit.tzzd.manager.service.DeviceInfoService;
+import com.ttit.tzzd.manager.vo.DevReportVo;
 import com.ttit.tzzd.manager.vo.DeviceInfoVo;
 import com.ttit.tzzd.sys.common.Constant;
 import com.ttit.tzzd.sys.vo.ResultVo;
@@ -41,7 +42,7 @@ public class DeviceInfoController {
     @PutMapping("regist")
     @ApiOperation(value = "注册新的设备", notes = "")
     public ResultVo regist(@RequestBody DeviceInfo deviceInfo) {
-        DeviceInfoVo info = deviceInfoService.regist(deviceInfo);
+        DeviceInfoVo info = deviceInfoService.regist(deviceInfo, Constant.USER_ID_ADMIN);
         return ResultVo.success(info);
     }
 
@@ -60,11 +61,28 @@ public class DeviceInfoController {
         return ResultVo.success(info);
     }
 
-    @PostMapping("group/modify")
+    @PostMapping("modify/group")
     @ApiOperation(value = "修改设备信息，只提供业主信息修改", notes = "")
     public ResultVo modifyGroup(@ApiParam(value = "设备ID", required = true) @RequestParam String id,
                                 @ApiParam(value = "设备分组ID", required = true) @RequestParam String groupId) {
         DeviceInfoVo info = deviceInfoService.modifyGroup(id, groupId, Constant.USER_ID_ADMIN);
         return ResultVo.success(info);
+    }
+
+    @PostMapping("report")
+    @ApiOperation(value = "设备上报,可以向服务器提交在线/下线状态或异常日志，限定时间内未提交在线日志的，判定为下线", notes = "")
+    public ResultVo report(@ApiParam(value = "设备ID", required = true) @RequestParam String id,
+                           @ApiParam(value = "上报信息", required = true) @RequestParam DevReportVo reportVo) {
+        deviceInfoService.report(reportVo);
+        return ResultVo.success("OK");
+    }
+
+    @PostMapping("legalize")
+    @ApiOperation(value = "设备认证", notes = "")
+    public ResultVo legalize(@ApiParam(value = "设备ID", required = true) @RequestParam String id,
+                             @ApiParam(value = "序列号", required = true) @RequestParam String serialNum,
+                             @ApiParam(value = "串码", required = true) @RequestParam String serialCode) {
+        deviceInfoService.legalize(id, serialNum, serialCode);
+        return ResultVo.success("OK");
     }
 }

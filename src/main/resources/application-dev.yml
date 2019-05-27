@@ -30,7 +30,8 @@ spring:
 
 logging:
   level:
-    com.ttit.tzzd.dao: debug
+    com.ttit.tzzd.manager.dao: debug
+    com.ttit.tzzd.sys.dao: debug
 
 business:
   server:
@@ -48,4 +49,4 @@ business:
     online: 10
     #上次收到信号，超过online时间，小于breaked时间，视为中断；大于breaked时间，视为离线
     breaked: 40
-  file-upload-path: E:\JAVA\workspace\tzzd\softs\
+  file-upload-path: E:\Projects\tzzd\softs

@@ -4,6 +4,7 @@ import com.ttit.tzzd.manager.entity.SoftManager;
 import com.ttit.tzzd.manager.vo.SoftManagerVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description:
@@ -17,4 +18,8 @@ public interface SoftManagerService {
     SoftManager add(SoftManager softManager, String userId);
 
     SoftManager del(String id, String userId);
+
+    List<Map<String, String>> updateInfo();
+
+    SoftManager modify(String id, String softId, String version, String userId);
 }

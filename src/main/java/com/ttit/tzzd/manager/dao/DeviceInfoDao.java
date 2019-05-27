@@ -4,6 +4,7 @@ import com.ttit.tzzd.manager.entity.DeviceInfo;
 import com.ttit.tzzd.manager.vo.DeviceInfoVo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,4 +27,6 @@ public interface DeviceInfoDao {
     DeviceInfoVo findBySerialNum(@Param("serialNum") String serialNum);
 
     Integer changeGroup(@Param("id") String id, @Param("groupId") String groupId);
+
+    void updateLogout(@Param("id") String id, @Param("deviceStatus") String deviceStatus, @Param("noticeTime") Date noticeTime);
 }

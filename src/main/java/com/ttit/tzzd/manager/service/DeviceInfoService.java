@@ -1,6 +1,7 @@
 package com.ttit.tzzd.manager.service;
 
 import com.github.pagehelper.PageInfo;
+import com.ttit.tzzd.manager.vo.DevReportVo;
 import com.ttit.tzzd.manager.vo.DeviceInfoVo;
 import com.ttit.tzzd.manager.entity.DeviceInfo;
 
@@ -29,7 +30,7 @@ public interface DeviceInfoService {
     /**
      * 注册新的设备
      */
-    DeviceInfoVo regist(DeviceInfo deviceInfo);
+    DeviceInfoVo regist(DeviceInfo deviceInfo, String userId);
 
     /**
      * 根据设备串号查询设备信息
@@ -45,4 +46,8 @@ public interface DeviceInfoService {
      * 修改设备分组信息
      */
     DeviceInfoVo modifyGroup(String id, String groupId, String userId);
+
+    void report(DevReportVo reportVo);
+
+    DeviceInfoVo legalize(String id, String serialNum, String serialCode);
 }

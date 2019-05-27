@@ -1,5 +1,6 @@
 package com.ttit.tzzd.sys.service;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ttit.tzzd.sys.common.DictHadler;
 import com.ttit.tzzd.sys.dao.SysLogDao;
@@ -23,7 +24,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class SysLogServiceImpl extends BaseService implements SysLogService {
+public class SysLogServiceImpl implements SysLogService {
     @Resource
     private SysLogDao sysLogDao;
     @Resource
@@ -31,7 +32,7 @@ public class SysLogServiceImpl extends BaseService implements SysLogService {
 
     @Override
     public PageInfo searchPage(String sysLogType, String keyword, Integer pageNum, Integer pageSize, String orderBy) {
-        startPage(pageNum, pageSize, orderBy);
+        PageHelper.startPage(pageNum, pageSize, orderBy);
         List<SysLogVo> list = sysLogDao.searchPage(sysLogType, keyword);
         //遍历翻译日志类型
         list.forEach(sysLog -> {
