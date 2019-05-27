@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 /**
- * Description:
+ * Description:管理-设备日志
  *
  * @author 小谢
  * Date: 2019/5/2417:18
  */
 @RestController
 @RequestMapping("/manager/device/log")
-@Api(tags = "业务-设备日志")
+@Api(tags = "管理-设备日志")
 public class DeviceLogController {
     @Resource
     private DeviceLogService deviceLogService;

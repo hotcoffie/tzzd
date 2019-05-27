@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 /**
- * Description:设备信息
+ * Description:管理-设备信息
  *
  * @author 小谢
  * Date: 2019/5/2113:50
  */
 @RestController
 @RequestMapping("/manager/device/info")
-@Api(tags = "业务-设备信息")
+@Api(tags = "管理-设备信息")
 public class DeviceInfoController {
 
     @Resource

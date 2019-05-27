@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * Description: 软件信息
+ * Description: 管理-软件信息
  *
  * @author 小谢
  * Date: 2019/5/2317:10
@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/manager/soft/info")
 @Slf4j
-@Api(tags = "业务-软件信息")
+@Api(tags = "管理-软件信息")
 public class SoftInfoController {
 
     @Autowired

@@ -9,11 +9,11 @@ spring:
       # 一次请求文件大小
       max-request-size: 102400KB
   datasource:
-    url: jdbc:mysql://192.168.0.120:3306/tzzd?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://172.18.0.58:3306/tzzd?useUnicode=true&characterEncoding=utf-8
     username: root
     password: root123
   redis:
-    host: 192.168.0.120
+    host: 172.18.0.58
     database: 0
     port: 6379
     password: ''

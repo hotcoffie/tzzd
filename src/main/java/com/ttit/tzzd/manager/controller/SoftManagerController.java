@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Description: 软件管理
+ * Description: 管理-软件管理
  *
  * @author 小谢
  * Date: 2019/5/2415:22
@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/manager/soft/manager")
 @Slf4j
-@Api(tags = "业务-软件管理")
+@Api(tags = "管理-软件管理")
 public class SoftManagerController {
     @Autowired
     private SoftManagerService softManagerService;
