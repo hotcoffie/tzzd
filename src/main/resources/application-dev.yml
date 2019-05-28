@@ -9,11 +9,11 @@ spring:
       # 一次请求文件大小
       max-request-size: 102400KB
   datasource:
-    url: jdbc:mysql://mysql:3306/tzzd?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://172.18.0.58:3306/tzzd?useUnicode=true&characterEncoding=utf-8
     username: root
     password: root123
   redis:
-    host: radis
+    host: 172.18.0.58
     database: 0
     port: 6379
     password: ''
@@ -36,7 +36,7 @@ logging:
 business:
   server:
     #对外暴露附件服务的根路径
-    atta-url: 172.18.0.58:9100
+    atta-url: localhost:9100
   dict:
     #使用内建版数据字典
     save-type: "app"
@@ -49,4 +49,4 @@ business:
     online: 10
     #上次收到信号，超过online时间，小于breaked时间，视为中断；大于breaked时间，视为离线
     breaked: 40
-  file-upload-path: /opt/tzzd/data/softs
+  file-upload-path: E:\Projects\tzzd\softs
