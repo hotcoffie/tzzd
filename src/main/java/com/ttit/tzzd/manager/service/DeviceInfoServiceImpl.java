@@ -88,7 +88,12 @@ public class DeviceInfoServiceImpl implements DeviceInfoService {
     @Transactional(rollbackFor = Exception.class)
     public DeviceInfoVo regist(DeviceInfo deviceInfo, String userId) {
         //1.数据校验
-        if (deviceInfo == null) {
+        if (deviceInfo == null||
+                StringUtils.isBlank(deviceInfo.getSerialNum())||
+                StringUtils.isBlank(deviceInfo.getSerialCode())||
+                StringUtils.isBlank(deviceInfo.getGroupId())||
+                StringUtils.isBlank(deviceInfo.getOwnerName())||
+                StringUtils.isBlank(deviceInfo.getOwnerPhone())) {
             throw new NotNullException();
         }
 
